@@ -37,8 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // DEFINITIONS
 define( 'TAXEDD_PLUGIN_PATH', dirname( __FILE__ ) );
 define( 'TAXEDD_PLUGIN_URL', plugins_url( '', __FILE__ ) );
+/*
+
 define( 'TAXEDD_PUBLIC_KEY', 'public_test_p3kZrb-dDQucnUvRABY0Ajxkxyfqgs8Xb-2QJbPW9lE' );
 define( 'TAXEDD_PRIVATE_KEY', 'priv_test__E8W36-LmVijPY6J4hb_zm4JW7bUdt_dX-CRgrtkOTI' );
 
+ */
 
 require_once(TAXEDD_PLUGIN_PATH . '/inc/core.php');
