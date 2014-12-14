@@ -14,4 +14,10 @@ require_once(TAXEDD_PLUGIN_PATH . '/inc/edd/settings.php');
 // MISC STUFF
 require_once(TAXEDD_PLUGIN_PATH . '/inc/functions.php');
 require_once(TAXEDD_PLUGIN_PATH . '/inc/notices.php');
+
+// LICENSING STUFF
+require_once(TAXEDD_PLUGIN_PATH . '/inc/licensing/licensing-admin.php');
+if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+	require_once(TAXEDD_PLUGIN_PATH . '/inc/licensing/EDD_SL_Plugin_Updater.php');
+}
 ?>

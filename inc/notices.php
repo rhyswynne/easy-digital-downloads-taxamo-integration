@@ -30,7 +30,7 @@ function taxedd_enable_tax_notice() {
 	$url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
 	?>
 	<div class="error">
-		<p><?php _e( 'Taxamo Integration for Easy Digital Downloads needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'my-text-domain' ); ?></p>
+		<p><?php _e( 'Taxamo Integration for Easy Digital Downloads needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'taxamoedd' ); ?></p>
 	</div>
 	<?php
 }
@@ -45,7 +45,7 @@ function taxedd_add_keys_notices() {
 	$url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions' );
 	?>
 	<div class="error">
-		<p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="'.$url.'">Click Here to add these fields</a>.'  , 'my-text-domain' ); ?></p>
+		<p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
 	</div>
 	<?php
 

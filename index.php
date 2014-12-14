@@ -7,7 +7,7 @@
  * @version
  */
 /*
-Plugin Name: Taxamo EDD Integration
+Plugin Name: Taxamo Integration For Easy Digital Downloads
 Plugin URI:
 Description: Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
 Version: 1.0
@@ -37,11 +37,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // DEFINITIONS
 define( 'TAXEDD_PLUGIN_PATH', dirname( __FILE__ ) );
 define( 'TAXEDD_PLUGIN_URL', plugins_url( '', __FILE__ ) );
-/*
 
-define( 'TAXEDD_PUBLIC_KEY', 'public_test_p3kZrb-dDQucnUvRABY0Ajxkxyfqgs8Xb-2QJbPW9lE' );
-define( 'TAXEDD_PRIVATE_KEY', 'priv_test__E8W36-LmVijPY6J4hb_zm4JW7bUdt_dX-CRgrtkOTI' );
+// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
+define( 'TAXEDD_SL_STORE_URL', 'http://winwar.co.uk' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
 
- */
+// the name of your product. This is the title of your product in EDD and should match the download title in EDD exactly
+define( 'TAXEDD_SL_ITEM_NAME', 'Taxamo Integration For Easy Digital Downloads' ); // IMPORTANT: change the name of this constant to something unique to prevent conflicts with other plugins using this system
 
 require_once(TAXEDD_PLUGIN_PATH . '/inc/core.php');
+
+
+// retrieve our license key from the DB
+$license_key = trim( get_option( 'taxedd_license_key' ) );
+
+// setup the updater
+$edd_updater = new EDD_SL_Plugin_Updater( TAXEDD_SL_STORE_URL, __FILE__, array( 
+		'version' 	=> '1.0', 		// current version number
+		'license' 	=> $license_key, 	// license key (used get_option above to retrieve from DB)
+		'item_name'     => TAXEDD_SL_ITEM_NAME, 	// name of this plugin
+		'author' 	=> 'Winwar Media',  // author of this plugin
+		'url'           => home_url()
+	)
+);
