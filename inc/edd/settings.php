@@ -46,6 +46,14 @@ function taxedd_license_settings( $settings ) {
 			'size' => 'large',
 			'std'  => __( '%%ID%%', 'taxedd' )
 		),
+		array(
+			'id' => 'taxedd_introduction_text',
+			'name' => __( 'Introduction Header Text', 'taxedd' ),
+			'desc' => __( 'This text will be added before the extra fields. Use this to link to your privacy policy and why you need this information', 'taxedd' ),
+			'type' => 'rich_editor',
+			'size' => 'large',
+			'std'  => __( '', 'taxedd' )
+		),
 	);
 
 	return array_merge( $settings, $taxamo_settings );

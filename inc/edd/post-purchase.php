@@ -20,15 +20,16 @@ function taxedd_submit_order_to_taxamo( $payment_id ) {
         $custom_id = str_replace( '%%ID%%', $payment_id, $custom_id );
         $custom_invoice = str_replace( '%%ID%%', $payment_id, $custom_invoice );
 
-        $taxamo = new Taxamo(new APIClient($private_key, 'https://api.taxamo.com'));
+        $taxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
         // Basic payment meta
         $payment_meta = edd_get_payment_meta( $payment_id );
-        
+
         // Cart details
         $cart_items = edd_get_payment_meta_cart_details( $payment_id );
-        
-        //wp_die( print_r( $payment_meta ) . ' ' . print_r($cart_items) );
+
+        $date = strtotime( $payment_meta['date'] );
+
         $transactionarray = array();
 
         foreach ( $payment_meta['cart_details'] as $cart_detail ) {
@@ -49,10 +50,45 @@ function taxedd_submit_order_to_taxamo( $payment_id ) {
         $transaction->custom_id = $custom_id;
         $transaction->invoice_number = $custom_invoice;
 
+
+        // Set Username
         if ( isset( $payment_meta['user_info']['first_name'] ) && isset( $payment_meta['user_info']['last_name'] ) ) {
             $transaction->buyer_name = $payment_meta['user_info']['first_name'] . " " . $payment_meta['user_info']['last_name'];
         }
-        //$transaction->invoice_address = $payment_meta['address'];
+
+        // Build The Address
+        $address = array();
+
+        if ( isset( $payment_meta['user_info']['address']['line1'] ) && !empty( $payment_meta['user_info']['address']['line1'] )  && "" !== ( $payment_meta['user_info']['address']['line1'] ) ) {
+            $streename = array( "street_name"=>$payment_meta['user_info']['address']['line1'] );
+            $address = array_merge( $streename, $address );
+        }
+
+        if ( isset( $payment_meta['user_info']['address']['line2'] ) && !empty($payment_meta['user_info']['address']['line2'])  && "" !== ( $payment_meta['user_info']['address']['line2'] ) ) {
+            $addressdetailname = array( "address_detail"=>$payment_meta['user_info']['address']['line2'] );
+            $address = array_merge( $addressdetailname, $address );
+        }
+
+        if ( isset( $payment_meta['user_info']['address']['city'] ) && !empty( $payment_meta['user_info']['address']['city'] ) && "" !== ( $payment_meta['user_info']['address']['city'] ) ) {
+            $cityname = array( "city"=>$payment_meta['user_info']['address']['city'] );
+            $address = array_merge( $cityname, $address );
+        }
+
+        if ( isset( $payment_meta['user_info']['address']['state'] ) && !empty( $payment_meta['user_info']['address']['state'] )  && "" !== ( $payment_meta['user_info']['address']['state'] ) )  {
+            $regionname = array( "region"=>$payment_meta['user_info']['address']['state'] );
+            $address = array_merge( $regionname, $address );
+        }
+
+        if ( isset( $payment_meta['user_info']['address']['zip'] ) && !empty( $payment_meta['user_info']['address']['zip'] )  && "" !== ( $payment_meta['user_info']['address']['zip'] ) )  {
+            $postalcode = array( "postal_code"=>$payment_meta['user_info']['address']['zip'] );
+            $address = array_merge( $postalcode, $address );
+        }
+
+        print_r($address);
+
+        $transaction->invoice_address = $address;
+
+        $transaction->invoice_date = date( "Y-m-d", $date );
 
         $transaction->transaction_lines = $transactionarray;
 
@@ -154,4 +190,4 @@ Input_transaction Object
 
     [order_date] =>
     ) */
-?>
+    ?>
