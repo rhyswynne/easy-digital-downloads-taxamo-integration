@@ -32,9 +32,7 @@ class Taxamo {
 	 * createRefund
 	 * Create a refund
    * key, string: Transaction key. (required)
-
    * body, createRefundIn: Input (required)
-
    * @return createRefundOut
 	 */
 
