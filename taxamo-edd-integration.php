@@ -145,18 +145,20 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             // EDD Hooks
             add_filter( 'edd_settings_extensions', array( $this, 'settings' ), 1 );
-            
-            add_filter( 'edd_get_cart_tax', array($this, 'calculate_tax' ));
-            add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );            
+
+            add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax' ) );
+            add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
             add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
             add_action( 'edd_purchase_form_user_info', array( $this, 'include_vat_check' ) );
 
             add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
             add_filter( 'edd_payment_meta', array( $this, 'store_eu_data' ) );
+            add_action( 'edd_purchase_data_before_gateway', array( $this, 'modify_tax' ), 10, 2 );
             add_action( 'edd_complete_purchase', array( $this, 'submit_order_to_taxamo' ) );
 
-            add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number'), 10, 2 );
-            
+
+            add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number' ), 10, 2 );
+
 
             // Admin Hooks
             if ( function_exists( 'edd_use_taxes' ) && !edd_use_taxes() ) {
@@ -223,7 +225,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'desc' => '',
                     'type' => 'header',
                     'size' => 'regular'
-                    ),
+                ),
                 array(
                     'id' => 'taxedd_public_key',
                     'name' => __( 'Taxamo Public Key', 'taxamoedd' ),
@@ -231,7 +233,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
-                    ),
+                ),
                 array(
                     'id' => 'taxedd_private_key',
                     'name' => __( 'Taxamo Private Key', 'taxamoedd' ),
@@ -239,7 +241,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
-                    ),
+                ),
                 array(
                     'id' => 'taxedd_custom_id_format',
                     'name' => __( 'Custom ID Format', 'taxamoedd' ),
@@ -247,7 +249,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '%%ID%%', 'taxamoedd' )
-                    ),
+                ),
                 array(
                     'id' => 'taxedd_custom_invoice_format',
                     'name' => __( 'Custom Invoice Format', 'taxamoedd' ),
@@ -255,7 +257,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '%%ID%%', 'taxamoedd' )
-                    ),
+                ),
                 array(
                     'id' => 'taxedd_introduction_text',
                     'name' => __( 'Introduction Header Text', 'taxamoedd' ),
@@ -263,11 +265,11 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'type' => 'rich_editor',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
-                    ),
-                );
+                ),
+            );
 
-return array_merge( $settings, $new_settings );
-}
+            return array_merge( $settings, $new_settings );
+        }
 
         /*
          * Activation function fires when the plugin is activated.
@@ -301,7 +303,7 @@ return array_merge( $settings, $new_settings );
             $taxamo = taxedd_get_country_code();
 
             if ( $taxamo && isset( $taxamo->country_code ) ) {
-                ?>
+?>
                 <input class="edd-country" type="hidden" name="edd_country" id="edd-country" value="<?php echo $taxamo->country_code; ?>"/>
                 <?php
             }
@@ -324,7 +326,7 @@ return array_merge( $settings, $new_settings );
 
 
         public static function include_vat_check() {
-            ?>
+?>
             <p id="edd-vat-reg-check-wrap">
                 <label for="edd_vatreg" class="edd-label">
                     <?php _e( 'I am registered for VAT in the EU', 'taxamoedd' ); ?>
@@ -357,20 +359,20 @@ return array_merge( $settings, $new_settings );
                     edd_set_error( 'taxedd-no-vat-number-error', __( 'If you are VAT registered, please enter a VAT number.', 'taxamoedd' ) );
                 }
 
-                $vatnumber = $string = preg_replace('/\s+/', '', $data['vat_number']);
-                
+                $vatnumber = $string = preg_replace( '/\s+/', '', $data['vat_number'] );
+
                 if ( isset( $edd_options['taxedd_private_key'] ) ) {
                     $private_key = $edd_options['taxedd_private_key'];
-                    
+
                     $vat_check = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-                    
-                    $resp = $vat_check->validateTaxNumber($data['billing_country'],$vatnumber);
-                
+
+                    $resp = $vat_check->validateTaxNumber( $data['billing_country'], $vatnumber );
+
                     if ( $resp->tax_deducted != "1" ) {
                         edd_set_error( 'taxedd-invalid-vat-number', __( 'The VAT number is invalid. Please double check or untick the VAT Registered Box.', 'taxamoedd' ) );
                     }
 
-                  } else {
+                } else {
                     edd_set_error( 'taxedd-no-prviate-key', __( 'Private key not present, so unable to complete purchase. Please contact shop owner.', 'taxamoedd' ) );
                 }
             }
@@ -384,9 +386,9 @@ return array_merge( $settings, $new_settings );
         public static function store_eu_data( $payment_meta ) {
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : '';
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
-            
+
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
-            if (isset( $_POST['vat_number'] ) ) {
+            if ( isset( $_POST['vat_number'] ) ) {
                 $payment_meta['vat_number'] = $_POST['vat_number'];
             } else {
                 $payment_meta['vat_number'] = "";
@@ -399,16 +401,17 @@ return array_merge( $settings, $new_settings );
 
         /**
          * Add the Vat Number to View Order Details
-         * @param  Array  $payment_meta The payment meta associated with this order.
-         * @param  Array  $user_info    The user information associated with this order.
-         * @return void                 
+         *
+         * @param Array   $payment_meta The payment meta associated with this order.
+         * @param Array   $user_info    The user information associated with this order.
+         * @return void
          */
-        function view_order_vat_number( $payment_meta, $user_info ) {
+        public static function view_order_vat_number( $payment_meta, $user_info ) {
             $vatnumber = isset( $payment_meta['vat_number'] ) ? $payment_meta['vat_number'] : '';
-            ?>
+?>
             <div class="column-container">
                 <div class="column">
-                    <strong><?php _e('VAT Number:', 'taxamoedd') ?></strong>&nbsp;
+                    <strong><?php _e( 'VAT Number:', 'taxamoedd' ) ?></strong>&nbsp;
                     <input type="text" name="vatnumber" value="<?php esc_attr_e( $vatnumber ); ?>" class="medium-text" />
                     <p class="description"><?php _e( 'If the customer had a VAT number, it will be here', 'taxamoedd' ); ?></p>
                 </div>
@@ -416,6 +419,24 @@ return array_merge( $settings, $new_settings );
             <?php
         }
 
+        /**
+         * Modify the tax if user has a VAT number.
+         *
+         * @param Array   $purchase_data Array of the purchase data
+         * @param Array   $valid_data    Array of valid data
+         * @return
+         */
+        public static function modify_tax( $purchase_data, $valid_data ) {
+
+            // Check if we have a Valid VAT number, if so, remove the tax.
+            if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
+                $purchase_data['post_data']['edd_vatreg'] ) {
+                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                $purchase_data['tax'] = 0;
+            }
+
+            return $purchase_data;
+        }
 
         /**
          *
@@ -472,7 +493,7 @@ return array_merge( $settings, $new_settings );
                 $transaction->custom_id = $custom_id;
                 $transaction->invoice_number = $custom_invoice;
 
-                if (isset($payment_meta['vat_number']) && !empty($payment_meta['vat_number']) && "" !== $payment_meta['vat_number']) {
+                if ( isset( $payment_meta['vat_number'] ) && !empty( $payment_meta['vat_number'] ) && "" !== $payment_meta['vat_number'] ) {
                     $transaction->buyer_tax_number = $payment_meta['vat_number'];
 
                     // We've already confirmed this is okay, so no need to check again.
@@ -542,7 +563,7 @@ return array_merge( $settings, $new_settings );
                 $transaction->billing_country_code = $countrycode->country_code;
                 $transactionarray = array();
 
-                foreach ($cart_items as $cart_item) {    
+                foreach ( $cart_items as $cart_item ) {
 
                     $customid++;
                     $transaction_line = new Input_transaction_line();
@@ -553,8 +574,8 @@ return array_merge( $settings, $new_settings );
                 }
                 $transaction->transaction_lines = $transactionarray;
 
-                $resp = $taxtaxamo->calculateTax(array('transaction' => $transaction));
-                
+                $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
+
                 return $resp->transaction->tax_amount;
             }
         }
@@ -567,7 +588,7 @@ return array_merge( $settings, $new_settings );
         function enable_tax_notice() {
 
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
-            ?>
+?>
             <div class="error">
                 <p><?php _e( 'Taxamo Integration for Easy Digital Downloads needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'taxamoedd' ); ?></p>
             </div>
@@ -582,7 +603,7 @@ return array_merge( $settings, $new_settings );
          */
         function add_keys_notices() {
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions' );
-            ?>
+?>
             <div class="error">
                 <p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
             </div>
