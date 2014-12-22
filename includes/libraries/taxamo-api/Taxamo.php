@@ -73,9 +73,7 @@ class Taxamo {
 	 * createPayment
 	 * Register a payment
    * key, string: Transaction key. (required)
-
    * body, createPaymentIn: Input (required)
-
    * @return createPaymentOut
 	 */
 
@@ -414,7 +412,6 @@ class Taxamo {
 	 * listTransactions
 	 * Browse transactions
    * statuses, string: Comma separated list of of transaction statuses. (optional)
-
    * sort_reverse, bool: If true, results are sorted in descending order. (optional)
 
    * tax_country_code, string: Two letter ISO tax country code. (optional)
