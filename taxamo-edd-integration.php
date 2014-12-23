@@ -230,7 +230,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 array(
                     'id' => 'taxedd_public_key',
                     'name' => __( 'Taxamo Public Key', 'taxamoedd' ),
-                    'desc' => __( 'Available from <a href="http://www.taxamo.com/">Taxamo</a>.', 'taxamoedd' ),
+                    'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
@@ -238,7 +238,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 array(
                     'id' => 'taxedd_private_key',
                     'name' => __( 'Taxamo Private Key', 'taxamoedd' ),
-                    'desc' => __( 'Available from <a href="http://www.taxamo.com/">Taxamo</a>.', 'taxamoedd' ),
+                    'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
@@ -628,7 +628,7 @@ return array_merge( $settings, $new_settings );
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions' );
             ?>
             <div class="error">
-                <p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
+                <p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="http://winwar.co.uk/recommends/taxamo"><strong>Sign Up for Taxamo</strong></a> and then <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
             </div>
             <?php
 
