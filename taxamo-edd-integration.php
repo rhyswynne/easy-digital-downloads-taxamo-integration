@@ -585,6 +585,7 @@ return array_merge( $settings, $new_settings );
                 $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
                 $transaction->billing_country_code = $countrycode->country_code;
                 $transactionarray = array();
+                $customid = "";
 
                 foreach ( $cart_items as $cart_item ) {
 
