@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     Taxamo Integration for Easy Digital Downloads
+ * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      @todo
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
  * Version:         1.0.0
@@ -614,7 +614,7 @@ return array_merge( $settings, $new_settings );
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
             ?>
             <div class="error">
-                <p><?php _e( 'Taxamo Integration for Easy Digital Downloads needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'taxamoedd' ); ?></p>
+                <p><?php _e( 'Taxamo Integration needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'taxamoedd' ); ?></p>
             </div>
             <?php
         }

@@ -1,4 +1,4 @@
-=== Taxamo Integration for Easy Digital Downloads ===
+=== Easy Digital Downloads - Taxamo Integration ===
 Contributors: rhyswynne
 Donate link: 
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu
