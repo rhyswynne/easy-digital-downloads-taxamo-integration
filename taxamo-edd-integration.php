@@ -24,7 +24,6 @@
  *   FUNCTIONS CAN CAUSE PLUGIN CONFLICTS!
  */
 
-
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
@@ -160,6 +159,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number' ), 10, 2 );
 
+            add_action( 'plugins_loaded', array( $this, 'unset_sessions' ) );
 
             // Admin Hooks
             if ( function_exists( 'edd_use_taxes' ) && !edd_use_taxes() ) {
@@ -355,7 +355,7 @@ return array_merge( $settings, $new_settings );
         public static function check_vat_number( $valid_data, $data ) {
             global $edd_options;
 
-            if ( $data['edd_vatreg'] ) {
+            if ( isset( $data['edd_vatreg'] ) ) {
                 if ( !isset( $data['vat_number'] ) || empty( $data['vat_number'] ) || "" === $data['vat_number'] ) {
                     edd_set_error( 'taxedd-no-vat-number-error', __( 'If you are VAT registered, please enter a VAT number.', 'taxamoedd' ) );
                 }
@@ -488,7 +488,7 @@ return array_merge( $settings, $new_settings );
 
                 $transaction->currency_code = $payment_meta['currency'];
                 $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                $transaction->billing_country_code = $payment_meta['country'];
+                $transaction->billing_country_code = $payment_meta['user_info']['address']['country'];
                 $transaction->buyer_email = $payment_meta['email'];
                 $transaction->original_transaction_key = $payment_meta['key'];
                 $transaction->custom_id = $custom_id;
@@ -672,6 +672,18 @@ return array_merge( $settings, $new_settings );
                 $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
             }
         }
+    }
+
+
+    /**
+     * Test Functions
+     */
+    /**
+     * Unset all session functions.
+     * @return void
+     */
+    function unset_sessions() {
+        wp_session_unset();
     }
 
 
