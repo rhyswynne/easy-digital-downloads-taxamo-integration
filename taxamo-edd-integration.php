@@ -143,7 +143,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             global $edd_options;
 
             // EDD Hooks
-            add_filter( 'edd_settings_extensions', array( $this, 'settings' ), 1 );
+            add_filter( 'edd_settings_taxes', array( $this, 'settings' ), 1 );
 
             add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax' ) );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
