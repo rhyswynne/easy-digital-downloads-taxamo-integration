@@ -10,9 +10,9 @@
 function taxedd_get_country_code( $ip = "" ) {
 	global $edd_options;
 
-	if (isset( $edd_options['taxedd_private_key'] )) {
+	if (isset( $edd_options['taxedd_private_token'] )) {
 
-		$private_key = $edd_options['taxedd_private_key'];
+		$private_key = $edd_options['taxedd_private_token'];
 
 		if ( !$ip ) {
 			if ( !empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {

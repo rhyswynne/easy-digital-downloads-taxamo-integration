@@ -166,7 +166,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 add_action( 'admin_notices', array( $this, 'enable_tax_notice' ) );
             }
 
-            if ( !isset( $edd_options['taxedd_public_key'] ) || empty( $edd_options['taxedd_public_key'] ) || "" === $edd_options['taxedd_public_key'] || !isset( $edd_options['taxedd_private_key'] ) || empty( $edd_options['taxedd_private_key'] ) || "" === $edd_options['taxedd_private_key'] ) {
+            if ( !isset( $edd_options['taxedd_public_token'] ) || empty( $edd_options['taxedd_public_token'] ) || "" === $edd_options['taxedd_public_token'] || !isset( $edd_options['taxedd_private_token'] ) || empty( $edd_options['taxedd_private_token'] ) || "" === $edd_options['taxedd_private_token'] ) {
                 add_action( 'admin_notices', array( $this, 'add_keys_notices' ) );
             }
 
@@ -228,16 +228,16 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'size' => 'regular'
                     ),
                 array(
-                    'id' => 'taxedd_public_key',
-                    'name' => __( 'Taxamo Public Key', 'taxamoedd' ),
+                    'id' => 'taxedd_public_token',
+                    'name' => __( 'Taxamo Public Token', 'taxamoedd' ),
                     'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
                     ),
                 array(
-                    'id' => 'taxedd_private_key',
-                    'name' => __( 'Taxamo Private Key', 'taxamoedd' ),
+                    'id' => 'taxedd_private_token',
+                    'name' => __( 'Taxamo Private Token', 'taxamoedd' ),
                     'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
                     'type' => 'text',
                     'size' => 'large',
@@ -362,8 +362,8 @@ return array_merge( $settings, $new_settings );
 
                 $vatnumber = $string = preg_replace( '/\s+/', '', $data['vat_number'] );
 
-                if ( isset( $edd_options['taxedd_private_key'] ) ) {
-                    $private_key = $edd_options['taxedd_private_key'];
+                if ( isset( $edd_options['taxedd_private_token'] ) ) {
+                    $private_key = $edd_options['taxedd_private_token'];
 
                     $vat_check = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
@@ -451,9 +451,9 @@ return array_merge( $settings, $new_settings );
         public static function submit_order_to_taxamo( $payment_id ) {
             global $edd_options;
 
-            if ( isset( $edd_options['taxedd_private_key'] ) ) {
+            if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
-                $private_key = $edd_options['taxedd_private_key'];
+                $private_key = $edd_options['taxedd_private_token'];
 
                 $custom_id = $edd_options['taxedd_custom_id_format'];
                 $custom_invoice  = $edd_options['taxedd_custom_invoice_format'];
@@ -573,8 +573,8 @@ return array_merge( $settings, $new_settings );
         function calculate_tax() {
             global $edd_options;
 
-            if ( isset( $edd_options['taxedd_private_key'] ) ) {
-                $private_key = $edd_options['taxedd_private_key'];
+            if ( isset( $edd_options['taxedd_private_token'] ) ) {
+                $private_key = $edd_options['taxedd_private_token'];
                 $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
                 $countrycode = taxedd_get_country_code();
                 $cart_items = edd_get_cart_content_details();
@@ -667,7 +667,7 @@ return array_merge( $settings, $new_settings );
                 $taxamo_body_json = json_encode( $taxamo_body_array );
 
                 // Create Taxamo Object and Submit a refund
-                $private_key = $edd_options['taxedd_private_key'];
+                $private_key = $edd_options['taxedd_private_token'];
                 $refundtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
                 $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
             }
