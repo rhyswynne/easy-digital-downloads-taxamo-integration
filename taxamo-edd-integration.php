@@ -147,7 +147,9 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax' ) );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
-            add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
+
+            // Shouldn't need to add a country code, as we're using it from the billing country.
+            //add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
             add_action( 'edd_purchase_form_user_info', array( $this, 'include_vat_check' ) );
 
             add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
@@ -386,7 +388,10 @@ return array_merge( $settings, $new_settings );
          */
         public static function store_eu_data( $payment_meta ) {
 
+            // Maybe can remove the next line
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
+            // Maybe can remove the above line
+            
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
@@ -396,7 +401,7 @@ return array_merge( $settings, $new_settings );
                 $payment_meta['vat_number'] = "";
                 $payment_meta['tax'] = self::calculate_tax();
             }
-            //wp_die(print_r($payment_meta));
+            
             return $payment_meta;
         }
 
