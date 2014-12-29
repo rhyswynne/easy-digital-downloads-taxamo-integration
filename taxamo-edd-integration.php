@@ -645,7 +645,7 @@ return array_merge( $settings, $new_settings );
          * @return void
          */
         function add_keys_notices() {
-            $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions' );
+            $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
             ?>
             <div class="error">
                 <p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="http://winwar.co.uk/recommends/taxamo"><strong>Sign Up for Taxamo</strong></a> and then <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
