@@ -465,108 +465,118 @@ return array_merge( $settings, $new_settings );
 
                 $custom_id = str_replace( '%%ID%%', $payment_id, $custom_id );
                 $custom_invoice = str_replace( '%%ID%%', $payment_id, $custom_invoice );
-
-                $taxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
+                
+                try {
+                    $taxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
                 // Basic payment meta
-                $payment_meta = edd_get_payment_meta( $payment_id );
+                    $payment_meta = edd_get_payment_meta( $payment_id );
 
                 // Cart details
-                $cart_items = edd_get_payment_meta_cart_details( $payment_id );
+                    $cart_items = edd_get_payment_meta_cart_details( $payment_id );
 
-                $date = strtotime( $payment_meta['date'] );
+                    $date = strtotime( $payment_meta['date'] );
 
-                $transactionarray = array();
+                    $transactionarray = array();
 
-                $productid = 1;
+                    $productid = 1;
 
-                foreach ( $payment_meta['cart_details'] as $cart_detail ) {
-                    $transaction_line = new Input_transaction_line();
-                    $transaction_line->amount = $cart_detail['price'];
-                    $transaction_line->custom_id = $cart_detail['name'] . $productid;
-                    array_push( $transactionarray, $transaction_line );
-                    $productid++;
+                    foreach ( $payment_meta['cart_details'] as $cart_detail ) {
+                        $transaction_line = new Input_transaction_line();
+                        $transaction_line->amount = $cart_detail['price'];
+                        $transaction_line->custom_id = $cart_detail['name'] . $productid;
+                        array_push( $transactionarray, $transaction_line );
+                        $productid++;
 
-                }
+                    }
 
-                $transaction = new Input_transaction();
+                    $transaction = new Input_transaction();
 
-                $transaction->currency_code = $payment_meta['currency'];
-                $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                $transaction->billing_country_code = $payment_meta['user_info']['address']['country'];
-                $transaction->buyer_email = $payment_meta['email'];
-                $transaction->original_transaction_key = $payment_meta['key'];
-                $transaction->custom_id = $custom_id;
-                $transaction->invoice_number = $custom_invoice;
+                    $transaction->currency_code = $payment_meta['currency'];
+                    $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
+                    $transaction->billing_country_code = $payment_meta['user_info']['address']['country'];
+                    $transaction->buyer_email = $payment_meta['email'];
+                    $transaction->original_transaction_key = $payment_meta['key'];
+                    $transaction->custom_id = $custom_id;
+                    $transaction->invoice_number = $custom_invoice;
 
-                if ( isset( $payment_meta['vat_number'] ) && !empty( $payment_meta['vat_number'] ) && "" !== $payment_meta['vat_number'] ) {
-                    $transaction->buyer_tax_number = $payment_meta['vat_number'];
+                    if ( isset( $payment_meta['vat_number'] ) && !empty( $payment_meta['vat_number'] ) && "" !== $payment_meta['vat_number'] ) {
+                        $transaction->buyer_tax_number = $payment_meta['vat_number'];
 
                     // We've already confirmed this is okay, so no need to check again.
-                    $transaction->tax_deducted = true;
-                }
+                        $transaction->tax_deducted = true;
+                    }
 
                 // Set Username
-                if ( isset( $payment_meta['user_info']['first_name'] ) && isset( $payment_meta['user_info']['last_name'] ) ) {
-                    $transaction->buyer_name = $payment_meta['user_info']['first_name'] . " " . $payment_meta['user_info']['last_name'];
-                }
+                    if ( isset( $payment_meta['user_info']['first_name'] ) && isset( $payment_meta['user_info']['last_name'] ) ) {
+                        $transaction->buyer_name = $payment_meta['user_info']['first_name'] . " " . $payment_meta['user_info']['last_name'];
+                    }
 
                 // Build The Address
-                $address = array();
+                    $address = array();
 
-                if ( isset( $payment_meta['user_info']['address']['line1'] ) && !empty( $payment_meta['user_info']['address']['line1'] )  && "" !== ( $payment_meta['user_info']['address']['line1'] ) ) {
-                    $streename = array( "street_name"=>$payment_meta['user_info']['address']['line1'] );
-                    $address = array_merge( $streename, $address );
-                }
+                    if ( isset( $payment_meta['user_info']['address']['line1'] ) && !empty( $payment_meta['user_info']['address']['line1'] )  && "" !== ( $payment_meta['user_info']['address']['line1'] ) ) {
+                        $streename = array( "street_name"=>$payment_meta['user_info']['address']['line1'] );
+                        $address = array_merge( $streename, $address );
+                    }
 
-                if ( isset( $payment_meta['user_info']['address']['line2'] ) && !empty( $payment_meta['user_info']['address']['line2'] )  && "" !== ( $payment_meta['user_info']['address']['line2'] ) ) {
-                    $addressdetailname = array( "address_detail"=>$payment_meta['user_info']['address']['line2'] );
-                    $address = array_merge( $addressdetailname, $address );
-                }
+                    if ( isset( $payment_meta['user_info']['address']['line2'] ) && !empty( $payment_meta['user_info']['address']['line2'] )  && "" !== ( $payment_meta['user_info']['address']['line2'] ) ) {
+                        $addressdetailname = array( "address_detail"=>$payment_meta['user_info']['address']['line2'] );
+                        $address = array_merge( $addressdetailname, $address );
+                    }
 
-                if ( isset( $payment_meta['user_info']['address']['city'] ) && !empty( $payment_meta['user_info']['address']['city'] ) && "" !== ( $payment_meta['user_info']['address']['city'] ) ) {
-                    $cityname = array( "city"=>$payment_meta['user_info']['address']['city'] );
-                    $address = array_merge( $cityname, $address );
-                }
+                    if ( isset( $payment_meta['user_info']['address']['city'] ) && !empty( $payment_meta['user_info']['address']['city'] ) && "" !== ( $payment_meta['user_info']['address']['city'] ) ) {
+                        $cityname = array( "city"=>$payment_meta['user_info']['address']['city'] );
+                        $address = array_merge( $cityname, $address );
+                    }
 
-                if ( isset( $payment_meta['user_info']['address']['state'] ) && !empty( $payment_meta['user_info']['address']['state'] )  && "" !== ( $payment_meta['user_info']['address']['state'] ) ) {
-                    $regionname = array( "region"=>$payment_meta['user_info']['address']['state'] );
-                    $address = array_merge( $regionname, $address );
-                }
+                    if ( isset( $payment_meta['user_info']['address']['state'] ) && !empty( $payment_meta['user_info']['address']['state'] )  && "" !== ( $payment_meta['user_info']['address']['state'] ) ) {
+                        $regionname = array( "region"=>$payment_meta['user_info']['address']['state'] );
+                        $address = array_merge( $regionname, $address );
+                    }
 
-                if ( isset( $payment_meta['user_info']['address']['zip'] ) && !empty( $payment_meta['user_info']['address']['zip'] )  && "" !== ( $payment_meta['user_info']['address']['zip'] ) ) {
-                    $postalcode = array( "postal_code"=>$payment_meta['user_info']['address']['zip'] );
-                    $address = array_merge( $postalcode, $address );
-                }
+                    if ( isset( $payment_meta['user_info']['address']['zip'] ) && !empty( $payment_meta['user_info']['address']['zip'] )  && "" !== ( $payment_meta['user_info']['address']['zip'] ) ) {
+                        $postalcode = array( "postal_code"=>$payment_meta['user_info']['address']['zip'] );
+                        $address = array_merge( $postalcode, $address );
+                    }
 
-                $transaction->invoice_address = $address;
+                    $transaction->invoice_address = $address;
 
-                $transaction->invoice_date = date( "Y-m-d", $date );
+                    $transaction->invoice_date = date( "Y-m-d", $date );
 
-                $transaction->transaction_lines = $transactionarray;
+                    $transaction->transaction_lines = $transactionarray;
 
-                $resp = $taxamo->createTransaction( array( 'transaction' => $transaction ) );
+                    $resp = $taxamo->createTransaction( array( 'transaction' => $transaction ) );
 
-                $taxamo->confirmTransaction( $resp->transaction->key, array( 'transaction' => $transaction ) );
+                    $taxamo->confirmTransaction( $resp->transaction->key, array( 'transaction' => $transaction ) );
 
-                $transactionkey = array( 'taxamo_transaction_key' => $resp->transaction->key );
-                $transactionlines = array();
+                    $transactionkey = array( 'taxamo_transaction_key' => $resp->transaction->key );
+                    $transactionlines = array();
 
                 // Get all Transaction Lines and add keys to site.
-                foreach ( $resp->transaction->transaction_lines as $transaction_line ) {
+                    foreach ( $resp->transaction->transaction_lines as $transaction_line ) {
 
-                    $temptransactionline = array(
-                        "taxamo_line_key"=>$transaction_line->line_key,
-                        "taxamo_total_amount"=>$transaction_line->total_amount
-                        );
+                        $temptransactionline = array(
+                            "taxamo_line_key"=>$transaction_line->line_key,
+                            "taxamo_total_amount"=>$transaction_line->total_amount
+                            );
 
-                    array_push($transactionlines, $temptransactionline);
+                        array_push($transactionlines, $temptransactionline);
+
+                    }
+
+                    $payment_meta = array_merge( $payment_meta, $transactionkey );
+                    $payment_meta = array_merge( $payment_meta, 
+                        array( 'taxamo_transaction_lines' => $transactionlines));
+                    
+                } catch (Exception $e) {
+
+                    $note = "Unable to submit order to Taxamo. Reason: " . $e->getMessage();
+                    edd_insert_payment_note( $payment_id, $note );
+                    $error = array( 'taxamo_unsubmitted' => true );
+                    $payment_meta = array_merge( $payment_meta, $error );
 
                 }
-                
-                $payment_meta = array_merge( $payment_meta, $transactionkey );
-                $payment_meta = array_merge( $payment_meta, 
-                    array( 'taxamo_transaction_lines' => $transactionlines));
 
                 update_post_meta( $payment_id, '_edd_payment_meta', $payment_meta );
 
@@ -580,6 +590,7 @@ return array_merge( $settings, $new_settings );
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
                 $private_key = $edd_options['taxedd_private_token'];
+                try { 
                 $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
                 $countrycode = taxedd_get_country_code();
                 $cart_items = edd_get_cart_content_details();
@@ -606,6 +617,9 @@ return array_merge( $settings, $new_settings );
                 $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
 
                 return $resp->transaction->tax_amount;
+                } catch (exception $e) {
+                    return "";
+                }
             }
         }
 
