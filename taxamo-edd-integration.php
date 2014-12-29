@@ -395,13 +395,13 @@ return array_merge( $settings, $new_settings );
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
-            if ( isset( $_POST['vat_number'] ) ) {
+            if ( isset( $_POST['vat_number'] ) && !empty($_POST['vat_number']) && "" !== $_POST['vat_number'] ) {
                 $payment_meta['vat_number'] = $_POST['vat_number'];
             } else {
                 $payment_meta['vat_number'] = "";
                 $payment_meta['tax'] = self::calculate_tax();
             }
-            
+
             return $payment_meta;
         }
 
@@ -440,10 +440,10 @@ return array_merge( $settings, $new_settings );
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) {
                 $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-            $purchase_data['tax'] = 0;
-        }
+                $purchase_data['tax'] = 0;
+            }
 
-        return $purchase_data;
+            return $purchase_data;
     }
 
         /**
@@ -474,7 +474,7 @@ return array_merge( $settings, $new_settings );
 
                 // Cart details
                     $cart_items = edd_get_payment_meta_cart_details( $payment_id );
-
+                    
                     $date = strtotime( $payment_meta['date'] );
 
                     $transactionarray = array();
@@ -585,12 +585,14 @@ return array_merge( $settings, $new_settings );
         }
 
 
-        function calculate_tax() {
+        public static function calculate_tax() {
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
                 $private_key = $edd_options['taxedd_private_token'];
+                
                 try { 
+                
                 $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
                 $countrycode = taxedd_get_country_code();
                 $cart_items = edd_get_cart_content_details();
@@ -615,13 +617,15 @@ return array_merge( $settings, $new_settings );
                 $transaction->transaction_lines = $transactionarray;
 
                 $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
-
+                
                 return $resp->transaction->tax_amount;
+
                 } catch (exception $e) {
                     return "";
                 }
             }
         }
+
 
         /**
          * Add a notice to enable tax if switched off.
