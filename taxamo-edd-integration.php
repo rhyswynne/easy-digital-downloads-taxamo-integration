@@ -365,9 +365,9 @@ return array_merge( $settings, $new_settings );
                 $vatnumber = $string = preg_replace( '/\s+/', '', $data['vat_number'] );
 
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                    
-                    $resp = taxedd_get_vat_details($vatnumber);
 
+                    $resp = taxedd_get_vat_details($vatnumber);
+                    
                     if ( 1 === $resp['buyer_tax_number_valid'] ) {
                         edd_set_error( 'taxedd-invalid-vat-number', __( 'The VAT number is invalid. Please double check or untick the VAT Registered Box.', 'taxamoedd' ) );
                     }
@@ -384,6 +384,7 @@ return array_merge( $settings, $new_settings );
          * @return void
          */
         public static function store_eu_data( $payment_meta ) {
+            global $edd_options;
 
             // Maybe can remove the next line
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
@@ -394,6 +395,14 @@ return array_merge( $settings, $new_settings );
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
             if ( isset( $_POST['vat_number'] ) && !empty($_POST['vat_number']) && "" !== $_POST['vat_number'] ) {
                 $payment_meta['vat_number'] = $_POST['vat_number'];
+                $vatarray = taxedd_get_vat_details($payment_meta['vat_number']);
+                $payment_meta['vat_billing_country_code'] = $vatarray['billing_country_code'];
+
+                // But if the base country is equal to the VAT Country code, add the tax on.
+                if ($edd_options['base_country'] == $vatarray['billing_country_code']) {
+                    $payment_meta['tax'] = self::calculate_tax();
+                }
+
             } else {
                 $payment_meta['vat_number'] = "";
                 $payment_meta['tax'] = self::calculate_tax();
@@ -432,16 +441,30 @@ return array_merge( $settings, $new_settings );
          * @return
          */
         public static function modify_tax( $purchase_data, $valid_data ) {
+            global $edd_options;
 
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) {
-                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                $purchase_data['tax'] = 0;
+                
+                $vatarray = taxedd_get_vat_details($purchase_data['post_data']['vat_number']);
+                
+                if ( isset($vatarray['billing_country_code'])) {
+                    $billingcc = $vatarray['billing_country_code'];
+                } else {
+                    $billingcc = $purchase_data['post_data']['billing_country'];
+                }
+
+                // Check if Base Country matches Billing Country, if not, remove the VAT
+                if ($edd_options['base_country'] !== $billingcc) {
+                    $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                    $purchase_data['tax'] = 0;
+                    $purchase_data['vat_billing_country_code'] = $billingcc;
+                }
             }
 
             return $purchase_data;
-    }
+        }
 
         /**
          *
@@ -500,8 +523,16 @@ return array_merge( $settings, $new_settings );
                     if ( isset( $payment_meta['vat_number'] ) && !empty( $payment_meta['vat_number'] ) && "" !== $payment_meta['vat_number'] ) {
                         $transaction->buyer_tax_number = $payment_meta['vat_number'];
 
-                    // We've already confirmed this is okay, so no need to check again.
-                        $transaction->tax_deducted = true;
+                        // We don't deduct tax for VAT Registered sales within the same country.
+                        if ($payment_meta['vat_billing_country_code'] == $edd_options['base_country']) {
+                            
+                            $transaction->tax_deducted = false;
+                        
+                        } else {
+                        
+                            $transaction->tax_deducted = true;
+                        
+                        }
                     }
 
                 // Set Username
@@ -589,33 +620,33 @@ return array_merge( $settings, $new_settings );
                 $private_key = $edd_options['taxedd_private_token'];
                 
                 try { 
-                
-                $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-                $countrycode = taxedd_get_country_code();
-                $cart_items = edd_get_cart_content_details();
+
+                    $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
+                    $countrycode = taxedd_get_country_code();
+                    $cart_items = edd_get_cart_content_details();
 
 
-                $transaction = new Input_transaction();
-                $transaction->currency_code = edd_get_currency();
-                $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                $transaction->billing_country_code = $countrycode->country_code;
-                $transactionarray = array();
-                $customid = "";
+                    $transaction = new Input_transaction();
+                    $transaction->currency_code = edd_get_currency();
+                    $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
+                    $transaction->billing_country_code = $countrycode->country_code;
+                    $transactionarray = array();
+                    $customid = "";
 
-                foreach ( $cart_items as $cart_item ) {
+                    foreach ( $cart_items as $cart_item ) {
 
-                    $customid++;
-                    $transaction_line = new Input_transaction_line();
-                    $transaction_line->amount = $cart_item['item_price'];
-                    $transaction_line->custom_id = $cart_item['name'] . $customid;
-                    array_push( $transactionarray, $transaction_line );
+                        $customid++;
+                        $transaction_line = new Input_transaction_line();
+                        $transaction_line->amount = $cart_item['item_price'];
+                        $transaction_line->custom_id = $cart_item['name'] . $customid;
+                        array_push( $transactionarray, $transaction_line );
 
-                }
-                $transaction->transaction_lines = $transactionarray;
+                    }
+                    $transaction->transaction_lines = $transactionarray;
 
-                $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
-                
-                return $resp->transaction->tax_amount;
+                    $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
+
+                    return $resp->transaction->tax_amount;
 
                 } catch (exception $e) {
                     return "";
