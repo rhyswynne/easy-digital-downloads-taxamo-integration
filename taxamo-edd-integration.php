@@ -331,7 +331,7 @@ return array_merge( $settings, $new_settings );
         public static function include_vat_check() {
             ?>
             <p id="edd-vat-reg-check-wrap">
-                <label for="edd_vatreg" class="edd-label">
+                <label for="edd-vatreg" class="edd-label">
                     <?php _e( 'I am registered for VAT in the EU', 'taxamoedd' ); ?>
                     <input class="edd-vatreg" type="checkbox" name="edd_vatreg" id="edd-vatreg" value="true" />
                 </label>
