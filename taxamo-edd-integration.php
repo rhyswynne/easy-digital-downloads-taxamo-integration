@@ -365,13 +365,10 @@ return array_merge( $settings, $new_settings );
                 $vatnumber = $string = preg_replace( '/\s+/', '', $data['vat_number'] );
 
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                    $private_key = $edd_options['taxedd_private_token'];
+                    
+                    $resp = taxedd_get_vat_details($vatnumber);
 
-                    $vat_check = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-
-                    $resp = $vat_check->validateTaxNumber( $data['billing_country'], $vatnumber );
-
-                    if ( $resp->tax_deducted != "1" ) {
+                    if ( 1 === $resp['buyer_tax_number_valid'] ) {
                         edd_set_error( 'taxedd-invalid-vat-number', __( 'The VAT number is invalid. Please double check or untick the VAT Registered Box.', 'taxamoedd' ) );
                     }
 
