@@ -147,12 +147,13 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax' ) );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
+            add_action( 'edd_cc_billing_bottom', array($this,'include_confirmation_checkbox'));
 
-            // Shouldn't need to add a country code, as we're using it from the billing country.
-            //add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
+            add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
             add_action( 'edd_purchase_form_user_info', array( $this, 'include_vat_check' ) );
 
             add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
+            add_filter( 'edd_checkout_error_checks', array( $this, 'check_self_declaration' ), 10, 2 );
             add_filter( 'edd_payment_meta', array( $this, 'store_eu_data' ) );
             add_action( 'edd_purchase_data_before_gateway', array( $this, 'modify_tax' ), 10, 2 );
             add_action( 'edd_complete_purchase', array( $this, 'submit_order_to_taxamo' ) );
@@ -161,7 +162,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number' ), 10, 2 );
 
-            add_action( 'plugins_loaded', array( $this, 'unset_sessions' ) );
+            //add_action( 'plugins_loaded', array( $this, 'unset_sessions' ) );
 
             // Admin Hooks
             if ( function_exists( 'edd_use_taxes' ) && !edd_use_taxes() ) {
@@ -292,17 +293,6 @@ return array_merge( $settings, $new_settings );
          */
         public static function add_country_code() {
 
-            global $edd_options;
-            global $user_ID;
-
-            if ( is_user_logged_in() )
-                $user_data = get_userdata( $user_ID );
-
-
-            $intro_text = $edd_options['taxedd_introduction_text'];
-
-            //echo '<p>' . $intro_text . '</p>';
-
             $taxamo = taxedd_get_country_code();
 
             if ( $taxamo && isset( $taxamo->country_code ) ) {
@@ -328,6 +318,36 @@ return array_merge( $settings, $new_settings );
         }
 
 
+        /**
+         * Adds a confirmation checkbox to the post. If billing data is present, and it matches IP address, then hide for now.
+         * @return void
+         */
+        public static function include_confirmation_checkbox() {
+           
+            $address = edd_get_customer_address();
+            $taxamo = taxedd_get_country_code();
+            $stylecss = "";
+
+            if ( $taxamo->country_code == $address['country'] ) {
+                $stylecss = ' style="display: none;"';
+            }
+
+            ?>
+
+
+            <p id="edd-confirmation-checkbox" <?php echo $stylecss; ?>>
+            <label for="edd-vat-confirm" class="edd-label">
+                    <?php _e( 'By clicking this checkbox, I can confirm my billing address is valid and is located in my usual country of residence.', 'taxamoedd' ); ?>
+                    <input class="edd-self-declaration" type="checkbox" name="edd_self_declaration" id="edd-self-declaration" value="true" />
+                </label>
+            <?php
+        }
+
+
+        /**
+         * Adds a checkbox to the site allowing users to check if they're registered for VAT in the EU.
+         * @return void
+         */
         public static function include_vat_check() {
             ?>
             <p id="edd-vat-reg-check-wrap">
@@ -378,6 +398,24 @@ return array_merge( $settings, $new_settings );
             }
         }
 
+
+        /**
+         * Check if the user's IP address location matches the billing address, if not, see if they've ticket the self declaration box.
+         *
+         * @return void
+         */
+        public static function check_self_declaration( $valid_data, $data ) {
+            global $edd_options;
+
+            if ( $data['billing_country'] != $data['edd_country'] ) {
+                
+                if ( !isset($data['edd_self_declaration']) ) {
+                    edd_set_error( 'taxedd-no-self-declaration', __( 'Please confirm that the billing address is correct.', 'taxamoedd' ) );
+                }
+            }
+        }
+
+
         /**
          * Stores the country code in the payment meta.
          *
@@ -406,6 +444,11 @@ return array_merge( $settings, $new_settings );
             } else {
                 $payment_meta['vat_number'] = "";
                 $payment_meta['tax'] = self::calculate_tax();
+            }
+
+            // Set self declaration flag if needed.
+            if ( isset( $_POST['edd_self_declaration'] ) ) {
+                $payment_meta['self_declaration'] = $_POST['edd_self_declaration'];
             }
 
             return $payment_meta;
@@ -519,6 +562,12 @@ return array_merge( $settings, $new_settings );
                     $transaction->original_transaction_key = $payment_meta['key'];
                     $transaction->custom_id = $custom_id;
                     $transaction->invoice_number = $custom_invoice;
+                    
+                    // If we have a self declaration, force the country code of the billing address.
+                    if (isset($payment_meta['self_declaration'])) {
+                        $transaction->tax_country_code = $payment_meta['user_info']['address']['country'];
+                        $transaction->force_country_code = $payment_meta['user_info']['address']['country'];
+                    }
 
                     if ( isset( $payment_meta['vat_number'] ) && !empty( $payment_meta['vat_number'] ) && "" !== $payment_meta['vat_number'] ) {
                         $transaction->buyer_tax_number = $payment_meta['vat_number'];
@@ -622,14 +671,24 @@ return array_merge( $settings, $new_settings );
                 try { 
 
                     $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-                    $countrycode = taxedd_get_country_code();
+                    
+                    $countrycode = "";
+
                     $cart_items = edd_get_cart_content_details();
 
+                    $address = edd_get_customer_address();
+
+                    if (isset($address['country']) && !empty($address['country']) && "" !== $address['country']) {
+                        $countrycode = $address['country'];
+                     } else {
+                        $ipcc = taxedd_get_country_code();
+                        $countrycode = $ipcc->country_code;
+                     }
 
                     $transaction = new Input_transaction();
                     $transaction->currency_code = edd_get_currency();
                     $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                    $transaction->billing_country_code = $countrycode->country_code;
+                    $transaction->billing_country_code = $countrycode;
                     $transactionarray = array();
                     $customid = "";
 

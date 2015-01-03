@@ -22,7 +22,7 @@ In January 2015 EU Legislation required you to record the selling location of al
 
 Installation
 ------------
-1. Upload \`taxamo-edd-integration` folder to the \`/wp-content/plugins/\` directory
+1. Upload `taxamo-edd-integration` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Sign up for Taxamo, and note the Private & Public Key.
 1. Add in the Downloads > Settings > Extensions your Public & Private key in the relevant box.
@@ -30,5 +30,6 @@ Installation
 
 Frequently Asked Questions
 --------------------------
-*I am unable to submit to Taxamo when testing locally, and is getting a validation error, why is it?*
+**I am unable to submit to Taxamo when testing locally, and is getting a validation error, why is it?**
+
 For some reason, Taxamo treats local IP's as being Irish, but your billing data is coming from elsewhere. As a result, Taxamo doesn't accept both pieces of data as by law there needs to be two non-contradictory pieces of data (which is the IP address, and the billing address).
