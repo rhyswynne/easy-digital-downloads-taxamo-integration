@@ -27,9 +27,3 @@ Installation
 1. Sign up for Taxamo, and note the Private & Public Key.
 1. Add in the Downloads > Settings > Taxes your Public & Private key in the relevant box.
 1. Switch on Taxes (in Downloads > Settings > Taxes).
-
-Frequently Asked Questions
---------------------------
-**I am unable to submit to Taxamo when testing locally, and is getting a validation error, why is it?**
-
-For some reason, Taxamo treats local IP's as being Irish, but your billing data is coming from elsewhere. As a result, Taxamo doesn't accept both pieces of data as by law there needs to be two non-contradictory pieces of data (which is the IP address, and the billing address).
