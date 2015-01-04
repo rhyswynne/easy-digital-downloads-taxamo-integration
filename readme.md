@@ -25,7 +25,7 @@ Installation
 1. Upload `taxamo-edd-integration` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Sign up for Taxamo, and note the Private & Public Key.
-1. Add in the Downloads > Settings > Extensions your Public & Private key in the relevant box.
+1. Add in the Downloads > Settings > Taxes your Public & Private key in the relevant box.
 1. Switch on Taxes (in Downloads > Settings > Taxes).
 
 Frequently Asked Questions
