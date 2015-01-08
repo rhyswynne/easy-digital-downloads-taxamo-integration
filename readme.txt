@@ -1,8 +1,8 @@
 === Easy Digital Downloads - Taxamo Integration ===
 Contributors: rhyswynne
-Donate link: 
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu
-Requires at least: 4.1
+Requires at least: 3.9.2
 Tested up to: 4.1
 Stable tag: trunk
 
@@ -10,7 +10,7 @@ This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital D
 
 == Description ==
 
-This plugin allows you to use Taxamo's EU VAT recording system within Easy Digital Downloads.
+This plugin allows you to use [Taxamo's EU VAT recording system](http://winwar.co.uk/recommends/taxamo) within [Easy Digital Downloads](http://www.easydigitaldownloads.com).
 
 In January 2015 EU Legislation required you to record the selling location of all sales from the EU and pay VAT on each purchase. In order to comply, services such as Taxamo will allow you to record the relevant data. This plugin will automatically track your transactions in Easy Digital Downloads, applying the correct VAT rate dependant on the user's location, as well as handles refunds as well.
 
@@ -39,6 +39,14 @@ Why don't you?
 
 
 == Changelog ==
+
+= 1.0.2 =
+* Remove warning on sitewide carts if cart is empty.
+
+= 1.0.1 =
+* First Push to the WordPress.org repository.
+
+
 
 = 1.0 =
 * First release

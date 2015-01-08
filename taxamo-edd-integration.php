@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
- * Plugin URI:      @todo
+ * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.0.0
+ * Version:         1.0.2
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -14,14 +14,6 @@
  *
  * IMPORTANT! Ensure that you make the following adjustments
  * before releasing your extension:
- *
- *
- * - Find all instances of @todo in the plugin and update the relevant
- *   areas as necessary.
- *
- * - All functions that are not class methods MUST be prefixed with the
- *   plugin name, replacing spaces with underscores. NOT PREFIXING YOUR
- *   FUNCTIONS CAN CAUSE PLUGIN CONFLICTS!
  */
 
 // Exit if accessed directly
@@ -74,7 +66,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          */
         private function setup_constants() {
             // Plugin version
-            define( 'EDD_TAXAMOEDDINTEGRATION_VER', '1.0.0' );
+            define( 'EDD_TAXAMOEDDINTEGRATION_VER', '1.0.1' );
 
             // Plugin path
             define( 'EDD_TAXAMOEDDINTEGRATION_DIR', plugin_dir_path( __FILE__ ) );
@@ -474,7 +466,7 @@ return array_merge( $settings, $new_settings );
             if ( isset( $_POST['edd_self_declaration'] ) ) {
 
                 $payment_meta['self_declaration'] = $_POST['edd_self_declaration'];
-            
+
             }
 
             return $payment_meta;
@@ -544,11 +536,11 @@ return array_merge( $settings, $new_settings );
             if ( isset($purchase_data['post_data']['edd_self_declaration']) ) {
 
                 if ($purchase_data['post_data']['edd_self_declaration']) {
-                
+
                     $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
                     $purchase_data['tax'] = self::calculate_tax( $purchase_data['user_info']['address']['country'] );
                     $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
-                
+
                 }
             }
             
@@ -743,15 +735,18 @@ return array_merge( $settings, $new_settings );
                     $customid = "";
                     $transaction->force_country_code = $countrycode;
 
-                    foreach ( $cart_items as $cart_item ) {
+                    if ( !empty( $cart_items ) ) {  
+                        foreach ( $cart_items as $cart_item ) {
 
-                        $customid++;
-                        $transaction_line = new Input_transaction_line();
-                        $transaction_line->amount = $cart_item['item_price'];
-                        $transaction_line->custom_id = $cart_item['name'] . $customid;
-                        array_push( $transactionarray, $transaction_line );
+                            $customid++;
+                            $transaction_line = new Input_transaction_line();
+                            $transaction_line->amount = $cart_item['item_price'];
+                            $transaction_line->custom_id = $cart_item['name'] . $customid;
+                            array_push( $transactionarray, $transaction_line );
 
+                        }
                     }
+
                     $transaction->transaction_lines = $transactionarray;
 
                     $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
