@@ -2,7 +2,7 @@ Easy Digital Downloads - Taxamo Integration
 ===========================================
 Contributors: rhyswynne
 
-Donate link: 
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu
 

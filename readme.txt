@@ -43,10 +43,12 @@ Why don't you?
 = 1.0.2 =
 * Remove warning on sitewide carts if cart is empty.
 
+* Time Taken - 16 minutes *
+
 = 1.0.1 =
 * First Push to the WordPress.org repository.
 
-
+* Time Taken - 23 hours *
 
 = 1.0 =
 * First release
