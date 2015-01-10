@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.0.2
+ * Version:         1.1-beta
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -95,7 +95,6 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/functions.php';
             // require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/admin.php';
             require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/libraries/taxamo-api/Taxamo.php';
-            require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/libraries/taxamo-api/enqueue-js.php';
             require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/libraries/taxamo-api/Taxamo/models/input_transaction_line.php';
             require_once EDD_TAXAMOEDDINTEGRATION_DIR . 'includes/libraries/taxamo-api/Taxamo/models/input_transaction.php';
 
@@ -387,10 +386,10 @@ return array_merge( $settings, $new_settings );
                     edd_set_error( 'taxedd-no-vat-number-error', __( 'If you are VAT registered, please enter a VAT number.', 'taxamoedd' ) );
                 }
 
-                $vatnumber = $string = preg_replace( '/\s+/', '', $data['vat_number'] );
+                $vatnumber = preg_replace( '/\s+/', '', $data['vat_number'] );
 
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
-
+                    
                     $resp = taxedd_get_vat_details($vatnumber);
                     
                     if ( 1 != $resp['buyer_tax_number_valid'] ) {
@@ -440,21 +439,26 @@ return array_merge( $settings, $new_settings );
         public static function store_eu_data( $payment_meta ) {
             global $edd_options;
 
-            // Maybe can remove the next line
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
-            // Maybe can remove the above line
+            
             
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
             if ( isset( $_POST['vat_number'] ) && !empty($_POST['vat_number']) && "" !== $_POST['vat_number'] ) {
-                $payment_meta['vat_number'] = $_POST['vat_number'];
-                $vatarray = taxedd_get_vat_details($payment_meta['vat_number']);
-                $payment_meta['vat_billing_country_code'] = $vatarray['billing_country_code'];
 
+                $payment_meta['vat_number'] = preg_replace( '/\s+/', '', $_POST['vat_number']);
+
+                $vatarray = taxedd_get_vat_details($payment_meta['vat_number']);
+
+                if ( isset( $vatarray['billing_country_code'] ) ) {
+                    $payment_meta['vat_billing_country_code'] = $vatarray['billing_country_code'];
+                } else {
+                    $payment_meta['vat_billing_country_code'] = $payment_meta['user_info']['address']['country'];
+                }
                 // But if the base country is equal to the VAT Country code, add the tax on.
-                if ($edd_options['base_country'] == $vatarray['billing_country_code']) {
-                    $payment_meta['tax'] = self::calculate_tax($vatarray['billing_country_code']);
+                if ($edd_options['base_country'] == $payment_meta['vat_billing_country_code']) {
+                    $payment_meta['tax'] = self::calculate_tax($payment_meta['vat_billing_country_code']);
                 }
 
             } else {

@@ -40,6 +40,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.1 =
+* Code Cleanup - removed a lot of redundant files
+
 = 1.0.2 =
 * Remove warning on sitewide carts if cart is empty.
 
