@@ -12,8 +12,6 @@
  * @author          Winwar Media
  * @copyright       Copyright (c) 2014 Winwar Media
  *
- * IMPORTANT! Ensure that you make the following adjustments
- * before releasing your extension:
  */
 
 // Exit if accessed directly
@@ -73,12 +71,6 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             // Plugin URL
             define( 'EDD_TAXAMOEDDINTEGRATION_URL', plugin_dir_url( __FILE__ ) );
-
-            // The URL of the updater
-            define( 'EDD_TAXAMOEDDINTEGRATION_UPDATE_URL', 'http://winwar.co.uk' );
-
-            // Name of Product
-            define( 'EDD_TAXAMOEDDINTEGRATION_NAME', 'Taxamo Integration For Easy Digital Downloads' );
         }
 
 
@@ -113,21 +105,6 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          * @access      private
          * @since       1.0.0
          * @return      void
-         *
-         * @todo        The hooks listed in this section are a guideline, and
-         *              may or may not be relevant to your particular extension.
-         *              Please remove any unnecessary lines, and refer to the
-         *              WordPress codex and EDD documentation for additional
-         *              information on the included hooks.
-         *
-         *              This method should be used to add any filters or actions
-         *              that are necessary to the core of your extension only.
-         *              Hooks that are relevant to meta boxes, widgets and
-         *              the like can be placed in their respective files.
-         *
-         *              IMPORTANT! If you are releasing your extension as a
-         *              commercial extension in the EDD store, DO NOT remove
-         *              the license check!
          */
         private function hooks() {
 
@@ -138,7 +115,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax_filter' ) );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
-            add_action( 'edd_cc_billing_bottom', array($this,'include_confirmation_checkbox'));
+            add_action( 'edd_cc_billing_bottom', array( $this, 'include_confirmation_checkbox' ) );
 
             add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
 
@@ -152,7 +129,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             // VAT NUMBER CHECK
             if ( isset($edd_options['taxedd_add_vatnumber_boxes']) ) {
 
-                add_action( 'edd_purchase_form_user_info', array( $this, 'include_vat_check' ) );
+                add_action( 'edd_cc_billing_top', array( $this, 'include_vat_check' ) );
                 add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
                 add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number' ), 10, 2 );
 
@@ -168,11 +145,6 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             if ( !isset( $edd_options['taxedd_public_token'] ) || empty( $edd_options['taxedd_public_token'] ) || "" === $edd_options['taxedd_public_token'] || !isset( $edd_options['taxedd_private_token'] ) || empty( $edd_options['taxedd_private_token'] ) || "" === $edd_options['taxedd_private_token'] ) {
                 add_action( 'admin_notices', array( $this, 'add_keys_notices' ) );
             }
-
-            // Handle licensing
-            /* if ( class_exists( 'EDD_License' ) ) {
-                $license = new EDD_License( __FILE__, 'Taxamo Integration for Easy Digital Downloads', EDD_TAXAMOEDDINTEGRATION_VER, 'Winwar Media', null, 'http://winwar.co.uk' );
-            } */
         }
 
 
@@ -189,22 +161,22 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             $lang_dir = apply_filters( 'edd_plugin_name_languages_directory', $lang_dir );
 
             // Traditional WordPress plugin locale filter
-            $locale = apply_filters( 'plugin_locale', get_locale(), 'edd-taxamo-edd-integration' );
-            $mofile = sprintf( '%1$s-%2$s.mo', 'edd-taxamo-edd-integration', $locale );
+            $locale = apply_filters( 'plugin_locale', get_locale(), 'taxamoedd' );
+            $mofile = sprintf( '%1$s-%2$s.mo', 'taxamoedd', $locale );
 
             // Setup paths to current locale file
             $mofile_local   = $lang_dir . $mofile;
-            $mofile_global  = WP_LANG_DIR . '/edd-taxamo-edd-integration/' . $mofile;
+            $mofile_global  = WP_LANG_DIR . '/taxamoedd/' . $mofile;
 
             if ( file_exists( $mofile_global ) ) {
-                // Look in global /wp-content/languages/edd-taxamo-edd-integration/ folder
-                load_textdomain( 'edd-taxamo-edd-integration', $mofile_global );
+                // Look in global /wp-content/languages/taxamoedd/ folder
+                load_textdomain( 'taxamoedd', $mofile_global );
             } elseif ( file_exists( $mofile_local ) ) {
-                // Look in local /wp-content/plugins/edd-taxamo-edd-integration/languages/ folder
-                load_textdomain( 'edd-taxamo-edd-integration', $mofile_local );
+                // Look in local /wp-content/plugins/taxamoedd/languages/ folder
+                load_textdomain( 'taxamoedd', $mofile_local );
             } else {
                 // Load the default language files
-                load_plugin_textdomain( 'edd-taxamo-edd-integration', false, $lang_dir );
+                load_plugin_textdomain( 'taxamoedd', false, $lang_dir );
             }
         }
 
@@ -220,36 +192,36 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         public function settings( $settings ) {
             $new_settings = array(
                 array(
-                    'id' => 'taxedd_header',
+                    'id'   => 'taxedd_header',
                     'name' => '<strong>' . __( 'Taxamo Integration', 'taxamoedd' ) . '</strong>',
                     'desc' => '',
                     'type' => 'header',
                     'size' => 'regular'
                     ),
                 array(
-                    'id' => 'taxedd_public_token',
+                    'id'   => 'taxedd_public_token',
                     'name' => __( 'Taxamo Public Token', 'taxamoedd' ),
-                    'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
+                    'desc' => sprintf( __( 'Available from <a href="%s">Taxamo</a>.', 'taxamoedd' ), esc_url( 'http://winwar.co.uk/recommends/taxamo/' ) ),
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
                     ),
                 array(
-                    'id' => 'taxedd_private_token',
+                    'id'   => 'taxedd_private_token',
                     'name' => __( 'Taxamo Private Token', 'taxamoedd' ),
-                    'desc' => __( 'Available from <a href="http://winwar.co.uk/recommends/taxamo/">Taxamo</a>.', 'taxamoedd' ),
+                    'desc' => sprintf( __( 'Available from <a href="%s">Taxamo</a>.', 'taxamoedd' ), esc_url( 'http://winwar.co.uk/recommends/taxamo/' ) ),
                     'type' => 'text',
                     'size' => 'large',
                     'std'  => __( '', 'taxamoedd' )
                     ),
                 array(
-                    'id' => 'taxedd_add_vatnumber_boxes',
+                    'id'   => 'taxedd_add_vatnumber_boxes',
                     'name' => __( 'Ask for VAT Number?', 'taxamoedd' ),
                     'desc' => __( 'If you wish to ask the user for a VAT number, please check this box.', 'taxamoedd' ),
                     'type' => 'checkbox'
                     ),
                 array(
-                    'id' => 'taxedd_custom_id_format',
+                    'id'   => 'taxedd_custom_id_format',
                     'name' => __( 'Custom ID Format', 'taxamoedd' ),
                     'desc' => __( 'Format of the Custom ID.<br/>The string %%ID%% is replaced with the payment ID.', 'taxamoedd' ),
                     'type' => 'text',
@@ -257,7 +229,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'std'  => __( '%%ID%%', 'taxamoedd' )
                     ),
                 array(
-                    'id' => 'taxedd_custom_invoice_format',
+                    'id'   => 'taxedd_custom_invoice_format',
                     'name' => __( 'Custom Invoice Format', 'taxamoedd' ),
                     'desc' => __( 'Format of the Invoice Number.<br/>The string %%ID%% is replaced with the payment ID.', 'taxamoedd' ),
                     'type' => 'text',
@@ -265,7 +237,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     'std'  => __( '%%ID%%', 'taxamoedd' )
                     ),
                 array(
-                    'id' => 'taxedd_introduction_text',
+                    'id'   => 'taxedd_introduction_text',
                     'name' => __( 'Introduction Header Text', 'taxamoedd' ),
                     'desc' => __( 'This text will be added before the extra fields. Use this to link to your privacy policy and why you need this information', 'taxamoedd' ),
                     'type' => 'rich_editor',
@@ -274,7 +246,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     ),
                 );
 
-return array_merge( $settings, $new_settings );
+			return array_merge( $settings, $new_settings );
 }
 
         /*
@@ -411,7 +383,7 @@ return array_merge( $settings, $new_settings );
         public static function check_self_declaration( $valid_data, $data ) {
             global $edd_options;
 
-            if (isset($data['edd_country'])) {
+            if ( isset($data['edd_country'] ) ) {
 
                 if ( $data['billing_country'] != $data['edd_country'] ) {
 
@@ -440,8 +412,7 @@ return array_merge( $settings, $new_settings );
             global $edd_options;
 
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
-            
-            
+               
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
@@ -458,7 +429,7 @@ return array_merge( $settings, $new_settings );
                 }
                 // But if the base country is equal to the VAT Country code, add the tax on.
                 if ($edd_options['base_country'] == $payment_meta['vat_billing_country_code']) {
-                    $payment_meta['tax'] = self::calculate_tax($payment_meta['vat_billing_country_code']);
+                    $payment_meta['tax'] = self::calculate_tax( $payment_meta['vat_billing_country_code'] );
                 }
 
             } else {
@@ -522,7 +493,7 @@ return array_merge( $settings, $new_settings );
                 }
 
                 // Check if Base Country matches Billing Country, if not, remove the VAT
-                if ($edd_options['base_country'] !== $billingcc) {
+                if ( $edd_options['base_country'] !== $billingcc ) {
                     $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
                     $purchase_data['tax'] = 0;
                     $purchase_data['vat_billing_country_code'] = $billingcc;
@@ -606,7 +577,7 @@ return array_merge( $settings, $new_settings );
                     $transaction->invoice_number = $custom_invoice;
                     
                     // If we have a self declaration, force the country code of the billing address.
-                    if (isset($payment_meta['self_declaration'])) {
+                    if ( isset( $payment_meta['self_declaration'] ) ) {
                         $transaction->tax_country_code = $payment_meta['user_info']['address']['country'];
                         $transaction->force_country_code = $payment_meta['user_info']['address']['country'];
                     }
@@ -680,7 +651,7 @@ return array_merge( $settings, $new_settings );
                             "taxamo_total_amount"=>$transaction_line->total_amount
                             );
 
-                        array_push($transactionlines, $temptransactionline);
+                        array_push( $transactionlines, $temptransactionline );
 
                     }
 
@@ -688,7 +659,7 @@ return array_merge( $settings, $new_settings );
                     $payment_meta = array_merge( $payment_meta, 
                         array( 'taxamo_transaction_lines' => $transactionlines));
                     
-                } catch (Exception $e) {
+                } catch ( Exception $e ) {
 
                     $note = "Unable to submit order to Taxamo. Reason: " . $e->getMessage();
                     edd_insert_payment_note( $payment_id, $note );
@@ -724,7 +695,7 @@ return array_merge( $settings, $new_settings );
 
                     $address = edd_get_customer_address();
 
-                    if (isset($address['country']) && !empty($address['country']) && "" !== $address['country']) {
+                    if ( isset($address['country']) && !empty($address['country']) && "" !== $address['country'] ) {
                         $countrycode = $address['country'];
                     } else {
                         $ipcc = taxedd_get_country_code();
@@ -757,7 +728,7 @@ return array_merge( $settings, $new_settings );
 
                     return $resp->transaction->tax_amount;
 
-                } catch (exception $e) {
+                } catch ( exception $e ) {
 
                     return "";
                 }
@@ -817,7 +788,7 @@ return array_merge( $settings, $new_settings );
 
                     return $resp->transaction->tax_amount;
 
-                } catch (exception $e) {
+                } catch ( exception $e ) {
 
                     return "";
                 }
@@ -835,7 +806,7 @@ return array_merge( $settings, $new_settings );
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
             ?>
             <div class="error">
-                <p><?php _e( 'Taxamo Integration needs Taxes to be Enabled. <a href="'.$url.'">Click Here to enable Taxes</a>.'  , 'taxamoedd' ); ?></p>
+                <p><?php echo sprintf( __( 'Taxamo Integration needs Taxes to be Enabled. <a href="%s">Click Here to enable Taxes</a>.', 'taxamoedd' ), esc_url( $url ) ); ?></p>
             </div>
             <?php
         }
@@ -850,7 +821,7 @@ return array_merge( $settings, $new_settings );
             $url = admin_url( 'edit.php?post_type=download&page=edd-settings&tab=taxes' );
             ?>
             <div class="error">
-                <p><?php _e( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="http://winwar.co.uk/recommends/taxamo"><strong>Sign Up for Taxamo</strong></a> and then <a href="'.$url.'">Click Here to add these fields</a>.'  , 'taxamoedd' ); ?></p>
+                <p><?php echo sprintf( __( 'You need to add the Taxamo Public & Private Keys to the extension. <a href="%s"><strong>Sign Up for Taxamo</strong></a> and then <a href="%s">Click Here to add these fields</a>.', 'taxamoedd' ), esc_url( 'http://winwar.co.uk/recommends/taxamo' ), esc_url( $url ) ); ?></p>
             </div>
             <?php
 
@@ -879,7 +850,7 @@ return array_merge( $settings, $new_settings );
             $transaction_key = $payment_meta['taxamo_transaction_key'];
 
             // Get Order Total and create an array for it.
-            foreach ($taxamo_transaction_lines as $taxamo_transaction_line ) {
+            foreach ( $taxamo_transaction_lines as $taxamo_transaction_line ) {
                 $line_key = $taxamo_transaction_line['taxamo_line_key'];
                 $amount = $taxamo_transaction_line['taxamo_total_amount'];
 
@@ -944,6 +915,3 @@ return array_merge( $settings, $new_settings );
     add_action( 'plugins_loaded', 'EDD_Taxamo_EDD_Integration_load' );
 
 } // End if class_exists check
-
-if ( ! class_exists( 'EDD_License' ) )
-    include dirname( __FILE__ ) . '/includes/EDD_License_Handler.php';
