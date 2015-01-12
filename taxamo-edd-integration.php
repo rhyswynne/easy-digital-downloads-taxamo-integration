@@ -115,7 +115,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax_filter' ) );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
-            add_action( 'edd_cc_billing_bottom', array( $this, 'include_confirmation_checkbox' ) );
+            add_action( 'edd_cc_billing_bottom', array( $this, 'include_confirmation_checkbox' ), 15, 2 );
 
             add_action( 'edd_purchase_form_user_info', array( $this, 'add_country_code' ) );
 
@@ -129,7 +129,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             // VAT NUMBER CHECK
             if ( isset($edd_options['taxedd_add_vatnumber_boxes']) ) {
 
-                add_action( 'edd_cc_billing_top', array( $this, 'include_vat_check' ) );
+                add_action( 'edd_cc_billing_bottom', array( $this, 'include_vat_check' ), 10, 2 );
                 add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
                 add_action( 'edd_payment_personal_details_list', array( $this, 'view_order_vat_number' ), 10, 2 );
 

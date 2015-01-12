@@ -27,3 +27,9 @@ Installation
 1. Sign up for Taxamo, and note the Private & Public Key.
 1. Add in the Downloads > Settings > Taxes your Public & Private key in the relevant box.
 1. Switch on Taxes (in Downloads > Settings > Taxes).
+
+Credits
+=======
+1.1
+---
+* Thanks to [Sami Keijonen](https://github.com/samikeijonen) from [Foxland](https://foxland.fi/) for a lot of work on 1.1, as well as a Finnish Translation.
