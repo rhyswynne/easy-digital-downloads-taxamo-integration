@@ -56,6 +56,8 @@ Why don't you?
 
 A big thank you to [Foxland](https://foxland.fi/) and [@samikeijonen](https://twitter.com/samikeijonen) for his work on this update!
 
+* Time Taken - 1 1/2 hours+ *
+
 = 1.0.2 =
 * Remove warning on sitewide carts if cart is empty.
 
