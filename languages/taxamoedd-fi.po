@@ -1,0 +1,163 @@
+# Copyright (C) 2015 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/easy-digital-downloads-taxamo-"
+"integration\n"
+"POT-Creation-Date: 2015-01-11 11:04:31+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-01-11 13:24+0200\n"
+"Last-Translator: Sami Keijonen <sami.keijonen@foxnet.fi>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.7.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi\n"
+
+#: includes/class.extension-activation.php:37
+msgid "EDD Taxamo Integration"
+msgstr "EDD Taxamo integraatio"
+
+#: includes/class.extension-activation.php:67
+msgid "requires Easy Digital Downloads! Please activate it to continue!"
+msgstr ""
+"vaatii Easy Digital Downloads -lisäosan! Aktivoi se ensin, jotta pääset "
+"eteenpäin!"
+
+#: includes/class.extension-activation.php:69
+msgid "requires Easy Digital Downloads! Please install it to continue!"
+msgstr ""
+"vaatii Easy Digital Downloads -lisäosan! Asenna se ensin, jotta pääset "
+"eteenpäin!"
+
+#: taxamo-edd-integration.php:196
+msgid "Taxamo Integration"
+msgstr "Taxamo integraatio"
+
+#: taxamo-edd-integration.php:203
+msgid "Taxamo Public Token"
+msgstr "Taxamo julkinen unnus:"
+
+#: taxamo-edd-integration.php:204 taxamo-edd-integration.php:212
+msgid "Available from <a href=\"%s\">Taxamo</a>."
+msgstr "Saatavilla <a href=\"%s\">Taxamon</a> sivuilta."
+
+#: taxamo-edd-integration.php:211
+msgid "Taxamo Private Token"
+msgstr "Taxamo salainen tunnus:"
+
+#: taxamo-edd-integration.php:219
+msgid "Ask for VAT Number?"
+msgstr "Kysy VAT-numeroa?"
+
+#: taxamo-edd-integration.php:220
+msgid "If you wish to ask the user for a VAT number, please check this box."
+msgstr "Jos haluat kysyä VAT-numeroa, niin valitse tämä."
+
+#: taxamo-edd-integration.php:225
+msgid "Custom ID Format"
+msgstr "ID-muoto"
+
+#: taxamo-edd-integration.php:226
+msgid ""
+"Format of the Custom ID.<br/>The string %%ID%% is replaced with the payment "
+"ID."
+msgstr "ID-numeron muoto.<br/>%%ID%% korvautuu maksu ID-numerolla."
+
+#: taxamo-edd-integration.php:229 taxamo-edd-integration.php:237
+msgid "%%ID%%"
+msgstr "%%ID%%"
+
+#: taxamo-edd-integration.php:233
+msgid "Custom Invoice Format"
+msgstr "Kuitin muoto"
+
+#: taxamo-edd-integration.php:234
+msgid ""
+"Format of the Invoice Number.<br/>The string %%ID%% is replaced with the "
+"payment ID."
+msgstr "Kuitin ID-numeron muoto.<br/>%%ID%% korvautuu maksun ID-numerolla."
+
+#: taxamo-edd-integration.php:241
+msgid "Introduction Header Text"
+msgstr "Intro otsikkoteksti"
+
+#: taxamo-edd-integration.php:242
+msgid ""
+"This text will be added before the extra fields. Use this to link to your "
+"privacy policy and why you need this information"
+msgstr ""
+"Tämä teksti näytetään ennen lisäkenttiä. Kirjoita tähän linkki sivuston "
+"ostosääntöihin ja miksi tarvitset tätä informaatiota"
+
+#: taxamo-edd-integration.php:316
+msgid ""
+"By clicking this checkbox, I can confirm my billing address is valid and is "
+"located in my usual country of residence."
+msgstr ""
+"Valitsemalla tämän vahvistan, että laskutusosoitteeni on oikea ja sijaitsee "
+"siellä missä olen."
+
+#: taxamo-edd-integration.php:331
+msgid "I am registered for VAT in the EU"
+msgstr "Olen VAT-rekisteröity EU:ssa"
+
+#: taxamo-edd-integration.php:338 taxamo-edd-integration.php:341
+msgid "VAT Number"
+msgstr "VAT-numero"
+
+#: taxamo-edd-integration.php:340
+msgid "If you are registered for VAT, place your VAT number here (no spaces)."
+msgstr "Jos olet VAT-rekisteröity, kirjoita VAT-numero ilman välilyöntejä."
+
+#: taxamo-edd-integration.php:358
+msgid "If you are VAT registered, please enter a VAT number."
+msgstr "Jos olet VAT-rekisteröity, kirjoita VAT-numero."
+
+#: taxamo-edd-integration.php:368
+msgid ""
+"The VAT number is invalid. Please double check or untick the VAT Registered "
+"Box."
+msgstr ""
+"VAT-numero on virheellinen. Tarkista se uudelleen tai ota VAT-numero pois "
+"käytöstä."
+
+#: taxamo-edd-integration.php:372
+msgid ""
+"Private key not present, so unable to complete purchase. Please contact shop "
+"owner."
+msgstr ""
+"Avain puuttuu, joten ostosta ei voitu suorittaa loppuun. Ota yhteys "
+"kauppiaaseen."
+
+#: taxamo-edd-integration.php:391 taxamo-edd-integration.php:399
+msgid "Please confirm that the billing address is correct."
+msgstr "Ole hyvä ja varmista, että laskutusosoite on oikein."
+
+#: taxamo-edd-integration.php:464
+msgid "VAT Number:"
+msgstr "VAT-numero:"
+
+#: taxamo-edd-integration.php:466
+msgid "If the customer had a VAT number, it will be here"
+msgstr "Jos asiakkaalla oli VAT-numero, se näkyy tässä"
+
+#: taxamo-edd-integration.php:809
+msgid ""
+"Taxamo Integration needs Taxes to be Enabled. <a href=\"%s\">Click Here to "
+"enable Taxes</a>."
+msgstr ""
+"Taxamo vaatii verojen käytön sivustolla. <a href=\"%s\">Klikkaa tästä, niin "
+"saat verot käyttöön</a>."
+
+#: taxamo-edd-integration.php:824
+msgid ""
+"You need to add the Taxamo Public & Private Keys to the extension. <a href="
+"\"%s\"><strong>Sign Up for Taxamo</strong></a> and then <a href=\"%s\">Click "
+"Here to add these fields</a>."
+msgstr ""
+"Sinun tarvitsee antaa Taxamo avaimet. <a href=\"%s\"><strong>Kirjaudu "
+"Taxamoon</strong></a> ja <a href=\"%s\">klikkaa tästä täyttääksesi kentät</"
+"a>."

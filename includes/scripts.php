@@ -5,6 +5,7 @@
  * @package     EDD\PluginName\Scripts
  * @since       1.0.0
  */
+
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
@@ -16,12 +17,12 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function edd_taxamo_edd_integration_scripts( $hook ) {
 
-	/* if ( edd_is_checkout() ) {
+	if ( edd_is_checkout() ) {
 
-			//wp_enqueue_script( 'taxamo-js-api', 'https://api.taxamo.com/js/v1/taxamo.all.js' );
-
-	} */
-	wp_enqueue_script( 'taxamo-custom-js', EDD_TAXAMOEDDINTEGRATION_URL . '/assets/js/scripts.js' );
+		//wp_enqueue_script( 'taxamo-js-api', 'https://api.taxamo.com/js/v1/taxamo.all.js' );
+		wp_enqueue_script( 'taxamo-custom-js', EDD_TAXAMOEDDINTEGRATION_URL . '/assets/js/scripts.js', array( 'jquery' ), EDD_TAXAMOEDDINTEGRATION_VER );
+		
+	}
 
 }
 add_action( 'wp_enqueue_scripts', 'edd_taxamo_edd_integration_scripts' );

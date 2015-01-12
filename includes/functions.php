@@ -1,5 +1,8 @@
 <?php
 
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
+
 /**
  * Get the country code from the IP address
  *
@@ -63,8 +66,7 @@ function taxedd_get_vat_details($vatnumber) {
 		}
 	}
 
-	$bodyarray = array('buyer_tax_number_valid' => false);
+	$bodyarray = array( 'buyer_tax_number_valid' => false );
 
 	return $bodyarray;
 }
-?>
