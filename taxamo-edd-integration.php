@@ -478,7 +478,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          */
         public static function modify_tax( $purchase_data, $valid_data ) {
             global $edd_options;
-
+    
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) 
@@ -690,7 +690,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
                     $cart_items = edd_get_cart_content_details();
-
+                    
                     $countrycode = "";
 
                     $address = edd_get_customer_address();
@@ -715,13 +715,13 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                             $customid++;
                             $transaction_line = new Input_transaction_line();
-                            $transaction_line->amount = $cart_item['item_price'];
+                            $transaction_line->amount = $cart_item['price'];
                             $transaction_line->custom_id = $cart_item['name'] . $customid;
                             array_push( $transactionarray, $transaction_line );
 
                         }
                     }
-
+                    
                     $transaction->transaction_lines = $transactionarray;
 
                     $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
@@ -777,7 +777,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                         $customid++;
                         $transaction_line = new Input_transaction_line();
-                        $transaction_line->amount = $cart_item['item_price'];
+                        $transaction_line->amount = $cart_item['price'];
                         $transaction_line->custom_id = $cart_item['name'] . $customid;
                         array_push( $transactionarray, $transaction_line );
 
