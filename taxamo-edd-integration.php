@@ -383,6 +383,10 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         public static function check_self_declaration( $valid_data, $data ) {
             global $edd_options;
 
+	    if ( edd_get_cart_subtotal() == 0 ) {
+                return;
+            }
+            
             if ( isset($data['edd_country'] ) ) {
 
                 if ( $data['billing_country'] != $data['edd_country'] ) {
@@ -532,6 +536,10 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         public static function submit_order_to_taxamo( $payment_id ) {
             global $edd_options;
 
+	    if ( edd_get_payment_meta( $payment_id, '_edd_payment_total', true ) == 0 ) {
+                return;
+            }
+            
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
                 $private_key = $edd_options['taxedd_private_token'];
