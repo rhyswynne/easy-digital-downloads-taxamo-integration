@@ -23,6 +23,7 @@ This plugin has **no free support**. As such, no support will be given on the 
 The plugin has been translated to the following languages.
 
 * Finnish - [Sami Keijonen](https://foxland.fi/) [@samikeijonen](https://twitter.com/samikeijonen)
+* French - [Fx Bénard](http://fxbenard.com/) [@fxbenard](https://twitter.com/fxbenard)
 
 To contribute a translation, please contact me!
 
@@ -51,8 +52,9 @@ Why don't you?
 * Returns correct tax rate should discount codes be used.
 * Transactions that are free downloads are not submitted to Taxamo
 * Should the self-confirmation box not be displayed (such as for a free transaction), then it is not checked.
+* Added French Translation
 
-Thanks to [Eric Daams](http://164a.com/) for his work on this update!
+Thanks to [Eric Daams](http://164a.com/) & [Fx Bénard](http://fxbenard.com/) for his work on this update!
 
 = 1.1 =
 * Code Cleanup - removed a lot of redundant files
