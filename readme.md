@@ -30,6 +30,10 @@ Installation
 
 Credits
 =======
+1.2
+---
+Thanks to [Eric Daams](http://164a.com/) for his work on this update!
+
 1.1
 ---
 * Thanks to [Sami Keijonen](https://github.com/samikeijonen) from [Foxland](https://foxland.fi/) for a lot of work on 1.1, as well as a Finnish Translation.

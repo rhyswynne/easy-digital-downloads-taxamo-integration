@@ -47,6 +47,13 @@ Why don't you?
 
 == Changelog ==
 
+= 1.2 =
+* Returns correct tax rate should discount codes be used.
+* Transactions that are free downloads are not submitted to Taxamo
+* Should the self-confirmation box not be displayed (such as for a free transaction), then it is not checked.
+
+Thanks to [Eric Daams](http://164a.com/) for his work on this update!
+
 = 1.1 =
 * Code Cleanup - removed a lot of redundant files
 * Added Finnish Translation
