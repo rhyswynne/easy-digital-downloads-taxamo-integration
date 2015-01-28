@@ -1,6 +1,6 @@
 Easy Digital Downloads - Taxamo Integration
 ===========================================
-Project Lead: [rhyswynne](http://github.com/rhyswynne)
+Maintainer: [rhyswynne](http://github.com/rhyswynne)
 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 
