@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[easy-digital-downloads-taxamo-integration.taxamoedd_1]
+file_filter = languages/taxamoedd-<lang>.po
+source_file = languages/taxamoedd.pot
+source_lang = en_US
+type = PO
