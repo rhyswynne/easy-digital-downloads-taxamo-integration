@@ -889,6 +889,21 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         }
 
         /**
+         * Retrieve the results from the Taxamo api's VAT lookup
+         *
+         * @return array
+         */
+        function get_api_response_vat_details( $vatnumber, $private_key ) {
+
+            if ( $this->get_cached_api_response( 'vatnumber', $vatnumber ) ) {
+                return $this->get_cached_api_response( 'vatnumber', $vatnumber );
+            }
+
+            $this->api_responses['vatnumber'][ $vatnumber ] = wp_remote_get( 'https://api.taxamo.com/api/v1/tax/vat_numbers/'.$vatnumber.'/validate?private_token=' . $private_key );
+            return $this->api_responses['vatnumber'][ $vatnumber ];
+        }
+
+        /**
          * Retrieve a cached call to the Taxamo api if it exists
          *
          * @return array|bool
