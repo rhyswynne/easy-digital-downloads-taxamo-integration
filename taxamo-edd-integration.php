@@ -872,6 +872,35 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
             }
         }
+
+        /**
+         * Retrieve the results from the Taxamo api's geoip lookup
+         *
+         * @return array
+         */
+        function get_api_response_geoip( $ip, $private_key ) {
+
+            if ( $this->get_cached_api_response( 'geoip', $ip ) ) {
+                return $this->get_cached_api_response( 'geoip', $ip );
+            }
+
+            $this->api_responses['geoip'][ $ip ] = wp_remote_get( 'https://api.taxamo.com/api/v1/geoip/'.$ip.'?private_token='. $private_key );
+            return $this->api_responses['geoip'][ $ip ];
+        }
+
+        /**
+         * Retrieve a cached call to the Taxamo api if it exists
+         *
+         * @return array|bool
+         */
+        function get_cached_api_response( $type, $id ) {
+
+            if ( empty( $this->api_responses ) || empty( $this->api_responses[ $type ] ) || empty( $this->api_responses[ $type ][ $id ] ) ) {
+                return false;
+            } else {
+                return $this->api_responses[ $type ][ $id ];
+            }
+        }
     }
 
 

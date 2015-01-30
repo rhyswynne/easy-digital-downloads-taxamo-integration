@@ -26,7 +26,7 @@ function taxedd_get_country_code( $ip = "" ) {
 				$ip=$_SERVER['REMOTE_ADDR'];
 			}
 		}
-		$taxresponse = wp_remote_get( 'https://api.taxamo.com/api/v1/geoip/'.$ip.'?private_token='. $private_key );
+		$taxresponse = EDD_Taxamo_EDD_Integration_load()->get_api_response_geoip( $ip, $private_key );
 
 		if( ! is_wp_error( $taxresponse )
 			&& isset( $taxresponse['response']['code'] )        
