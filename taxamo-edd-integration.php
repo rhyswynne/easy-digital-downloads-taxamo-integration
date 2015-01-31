@@ -34,6 +34,14 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          */
         private static $instance;
 
+        /**
+         *
+         *
+         * @var         array $api_responses Stored responses from the Taxamo api
+         * @since       1.3
+         */
+        public $api_responses = array();
+
 
         /**
          * Get active instance
@@ -361,9 +369,9 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 $vatnumber = preg_replace( '/\s+/', '', $data['vat_number'] );
 
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                    
+
                     $resp = taxedd_get_vat_details($vatnumber);
-                    
+
                     if ( 1 != $resp['buyer_tax_number_valid'] ) {
                         edd_set_error( 'taxedd-invalid-vat-number', __( 'The VAT number is invalid. Please double check or untick the VAT Registered Box.', 'taxamoedd' ) );
                     }
@@ -386,7 +394,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 	    if ( edd_get_cart_subtotal() == 0 ) {
                 return;
             }
-            
+
             if ( isset($data['edd_country'] ) ) {
 
                 if ( $data['billing_country'] != $data['edd_country'] ) {
@@ -412,11 +420,11 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          *
          * @return void
          */
-        public static function store_eu_data( $payment_meta ) {
+        public function store_eu_data( $payment_meta ) {
             global $edd_options;
 
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
-               
+
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
@@ -433,12 +441,12 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 }
                 // But if the base country is equal to the VAT Country code, add the tax on.
                 if ($edd_options['base_country'] == $payment_meta['vat_billing_country_code']) {
-                    $payment_meta['tax'] = self::calculate_tax( $payment_meta['vat_billing_country_code'] );
+                    $payment_meta['tax'] = $this->calculate_tax( $payment_meta['vat_billing_country_code'] );
                 }
 
             } else {
                 $payment_meta['vat_number'] = "";
-                $payment_meta['tax'] = self::calculate_tax( $payment_meta['user_info']['address']['country'] );
+                $payment_meta['tax'] = $this->calculate_tax( $payment_meta['user_info']['address']['country'] );
             }
 
             // Set self declaration flag if needed.
@@ -480,12 +488,12 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          * @param Array   $valid_data    Array of valid data
          * @return
          */
-        public static function modify_tax( $purchase_data, $valid_data ) {
+        public function modify_tax( $purchase_data, $valid_data ) {
             global $edd_options;
-    
+
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
-                $purchase_data['post_data']['edd_vatreg'] ) 
+                $purchase_data['post_data']['edd_vatreg'] )
             {
 
                 $vatarray = taxedd_get_vat_details($purchase_data['post_data']['vat_number']);
@@ -506,7 +514,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                 // Just double check tax again, with the new Billing Country Code
                     $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                    $purchase_data['tax'] = self::calculate_tax( $billingcc );
+                    $purchase_data['tax'] = $this->calculate_tax( $billingcc );
                     $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
                 }
             }
@@ -517,12 +525,12 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 if ($purchase_data['post_data']['edd_self_declaration']) {
 
                     $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                    $purchase_data['tax'] = self::calculate_tax( $purchase_data['user_info']['address']['country'] );
+                    $purchase_data['tax'] = $this->calculate_tax( $purchase_data['user_info']['address']['country'] );
                     $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
 
                 }
             }
-            
+
             return $purchase_data;
         }
 
@@ -539,7 +547,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 	    if ( edd_get_payment_meta( $payment_id, '_edd_payment_total', true ) == 0 ) {
                 return;
             }
-            
+
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
                 $private_key = $edd_options['taxedd_private_token'];
@@ -549,7 +557,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                 $custom_id = str_replace( '%%ID%%', $payment_id, $custom_id );
                 $custom_invoice = str_replace( '%%ID%%', $payment_id, $custom_invoice );
-                
+
                 try {
                     $taxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
@@ -558,7 +566,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                 // Cart details
                     $cart_items = edd_get_payment_meta_cart_details( $payment_id );
-                    
+
                     $date = strtotime( $payment_meta['date'] );
 
                     $transactionarray = array();
@@ -583,7 +591,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     $transaction->original_transaction_key = $payment_meta['key'];
                     $transaction->custom_id = $custom_id;
                     $transaction->invoice_number = $custom_invoice;
-                    
+
                     // If we have a self declaration, force the country code of the billing address.
                     if ( isset( $payment_meta['self_declaration'] ) ) {
                         $transaction->tax_country_code = $payment_meta['user_info']['address']['country'];
@@ -664,9 +672,9 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     }
 
                     $payment_meta = array_merge( $payment_meta, $transactionkey );
-                    $payment_meta = array_merge( $payment_meta, 
+                    $payment_meta = array_merge( $payment_meta,
                         array( 'taxamo_transaction_lines' => $transactionlines));
-                    
+
                 } catch ( Exception $e ) {
 
                     $note = "Unable to submit order to Taxamo. Reason: " . $e->getMessage();
@@ -687,59 +695,11 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          * Filter to display tax. This is done based on address, if not present it's done on IP address.
          * @return void
          */
-        public static function calculate_tax_filter() {
+        public function calculate_tax_filter() {
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                $private_key = $edd_options['taxedd_private_token'];
-                
-                try { 
-
-                    $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-
-                    $cart_items = edd_get_cart_content_details();
-                    
-                    $countrycode = "";
-
-                    $address = edd_get_customer_address();
-
-                    if ( isset($address['country']) && !empty($address['country']) && "" !== $address['country'] ) {
-                        $countrycode = $address['country'];
-                    } else {
-                        $ipcc = taxedd_get_country_code();
-                        $countrycode = $ipcc->country_code;
-                    }
-
-                    $transaction = new Input_transaction();
-                    $transaction->currency_code = edd_get_currency();
-                    $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                    $transaction->billing_country_code = $countrycode;
-                    $transactionarray = array();
-                    $customid = "";
-                    $transaction->force_country_code = $countrycode;
-
-                    if ( !empty( $cart_items ) ) {  
-                        foreach ( $cart_items as $cart_item ) {
-
-                            $customid++;
-                            $transaction_line = new Input_transaction_line();
-                            $transaction_line->amount = $cart_item['price'];
-                            $transaction_line->custom_id = $cart_item['name'] . $customid;
-                            array_push( $transactionarray, $transaction_line );
-
-                        }
-                    }
-                    
-                    $transaction->transaction_lines = $transactionarray;
-
-                    $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
-
-                    return $resp->transaction->tax_amount;
-
-                } catch ( exception $e ) {
-
-                    return "";
-                }
+                return $this->get_api_response_calculate_tax();
             }
         }
 
@@ -749,57 +709,11 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          * @param  string $countrycode 2 Letter Country Code
          * @return float  $resp->transaction->tax_amount the amount of tax paid.
          */
-        public static function calculate_tax( $countrycode = "" ) {
+        public function calculate_tax( $countrycode = "" ) {
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                $private_key = $edd_options['taxedd_private_token'];
-                
-                try { 
-
-                    $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-
-                    $cart_items = edd_get_cart_content_details();
-
-                    if ( "" == $countrycode ) {
-
-                        $address = edd_get_customer_address();
-
-                        if (isset($address['country']) && !empty($address['country']) && "" !== $address['country']) {
-                            $countrycode = $address['country'];
-                        } else {
-                            $ipcc = taxedd_get_country_code();
-                            $countrycode = $ipcc->country_code;
-                        }
-                    }
-
-                    $transaction = new Input_transaction();
-                    $transaction->currency_code = edd_get_currency();
-                    $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
-                    $transaction->billing_country_code = $countrycode;
-                    $transactionarray = array();
-                    $customid = "";
-                    $transaction->force_country_code = $countrycode;
-
-                    foreach ( $cart_items as $cart_item ) {
-
-                        $customid++;
-                        $transaction_line = new Input_transaction_line();
-                        $transaction_line->amount = $cart_item['price'];
-                        $transaction_line->custom_id = $cart_item['name'] . $customid;
-                        array_push( $transactionarray, $transaction_line );
-
-                    }
-                    $transaction->transaction_lines = $transactionarray;
-
-                    $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
-
-                    return $resp->transaction->tax_amount;
-
-                } catch ( exception $e ) {
-
-                    return "";
-                }
+                return $this->get_api_response_calculate_tax();
             }
         }
 
@@ -874,17 +788,83 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         }
 
         /**
+         * Retrieve the results from the Taxamo api's calculateTax lookup
+         *
+         * @return array
+         */
+        public function get_api_response_calculate_tax() {
+
+            if ( $this->get_cached_api_response( 'calculate_tax' ) !== false ) {
+                return $this->get_cached_api_response( 'calculate_tax' );
+            }
+
+            global $edd_options;
+            $private_key = $edd_options['taxedd_private_token'];
+
+            try {
+
+                $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
+
+                $cart_items = edd_get_cart_content_details();
+
+                $countrycode = "";
+
+                $address = edd_get_customer_address();
+
+                if ( isset($address['country']) && !empty($address['country']) && "" !== $address['country'] ) {
+                    $countrycode = $address['country'];
+                } else {
+                    $ipcc = taxedd_get_country_code();
+                    $countrycode = $ipcc->country_code;
+                }
+
+                $transaction = new Input_transaction();
+                $transaction->currency_code = edd_get_currency();
+                $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
+                $transaction->billing_country_code = $countrycode;
+                $transactionarray = array();
+                $customid = "";
+                $transaction->force_country_code = $countrycode;
+
+                if ( !empty( $cart_items ) ) {
+                    foreach ( $cart_items as $cart_item ) {
+
+                        $customid++;
+                        $transaction_line = new Input_transaction_line();
+                        $transaction_line->amount = $cart_item['price'];
+                        $transaction_line->custom_id = $cart_item['name'] . $customid;
+                        array_push( $transactionarray, $transaction_line );
+
+                    }
+                }
+
+                $transaction->transaction_lines = $transactionarray;
+
+                $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
+
+                $this->api_responses['calculate_tax'] = $resp->transaction->tax_amount;
+
+                return $this->api_responses['calculate_tax'];
+
+            } catch ( exception $e ) {
+
+                return "";
+            }
+        }
+
+        /**
          * Retrieve the results from the Taxamo api's geoip lookup
          *
          * @return array
          */
-        function get_api_response_geoip( $ip, $private_key ) {
+        public function get_api_response_geoip( $ip, $private_key ) {
 
-            if ( $this->get_cached_api_response( 'geoip', $ip ) ) {
+            if ( $this->get_cached_api_response( 'geoip', $ip ) !== false ) {
                 return $this->get_cached_api_response( 'geoip', $ip );
             }
 
             $this->api_responses['geoip'][ $ip ] = wp_remote_get( 'https://api.taxamo.com/api/v1/geoip/'.$ip.'?private_token='. $private_key );
+
             return $this->api_responses['geoip'][ $ip ];
         }
 
@@ -893,13 +873,14 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          *
          * @return array
          */
-        function get_api_response_vat_details( $vatnumber, $private_key ) {
+        public function get_api_response_vat_details( $vatnumber, $private_key ) {
 
-            if ( $this->get_cached_api_response( 'vatnumber', $vatnumber ) ) {
+            if ( $this->get_cached_api_response( 'vatnumber', $vatnumber ) !== false ) {
                 return $this->get_cached_api_response( 'vatnumber', $vatnumber );
             }
 
             $this->api_responses['vatnumber'][ $vatnumber ] = wp_remote_get( 'https://api.taxamo.com/api/v1/tax/vat_numbers/'.$vatnumber.'/validate?private_token=' . $private_key );
+
             return $this->api_responses['vatnumber'][ $vatnumber ];
         }
 
@@ -908,12 +889,17 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
          *
          * @return array|bool
          */
-        function get_cached_api_response( $type, $id ) {
+        public function get_cached_api_response( $type, $id = '' ) {
 
-            if ( empty( $this->api_responses ) || empty( $this->api_responses[ $type ] ) || empty( $this->api_responses[ $type ][ $id ] ) ) {
+            if ( empty( $this->api_responses ) || !isset( $this->api_responses[ $type ] ) || ( !empty( $id ) && !isset( $this->api_responses[ $type ][ $id ] ) ) ) {
                 return false;
+
             } else {
-                return $this->api_responses[ $type ][ $id ];
+                if ( empty( $id ) ) {
+                    return $this->api_responses[ $type ];
+                } else {
+                    return $this->api_responses[ $type ][ $id ];
+                }
             }
         }
     }
