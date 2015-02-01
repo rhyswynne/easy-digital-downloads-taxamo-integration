@@ -132,10 +132,10 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             add_action( 'edd_purchase_data_before_gateway', array( $this, 'modify_tax' ), 10, 2 );
             add_action( 'edd_complete_purchase', array( $this, 'submit_order_to_taxamo' ) );
 
-            add_action( 'edd_update_payment_status', array( $this, 'submit_refund_to_taxamo'), 200, 3 );
+            add_action( 'edd_update_payment_status', array( $this, 'submit_refund_to_taxamo' ), 200, 3 );
 
             // VAT NUMBER CHECK
-            if ( isset($edd_options['taxedd_add_vatnumber_boxes']) ) {
+            if ( isset( $edd_options['taxedd_add_vatnumber_boxes'] ) ) {
 
                 add_action( 'edd_cc_billing_bottom', array( $this, 'include_vat_check' ), 10, 2 );
                 add_filter( 'edd_checkout_error_checks', array( $this, 'check_vat_number' ), 10, 2 );
@@ -254,7 +254,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     ),
                 );
 
-			return array_merge( $settings, $new_settings );
+return array_merge( $settings, $new_settings );
 }
 
         /*
@@ -302,6 +302,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
         /**
          * Adds a confirmation checkbox to the post. If billing data is present, and it matches IP address, then hide for now.
+         *
          * @return void
          */
         public static function include_confirmation_checkbox() {
@@ -310,8 +311,8 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             $taxamo = taxedd_get_country_code();
             $stylecss = "";
 
-            if ( isset($taxamo) ) {
-                if ($taxamo->country_code == $address['country'] ) {
+            if ( isset( $taxamo ) ) {
+                if ( $taxamo->country_code == $address['country'] ) {
                     $stylecss = ' style="display: none;"';
                 }
             }
@@ -330,6 +331,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
         /**
          * Adds a checkbox to the site allowing users to check if they're registered for VAT in the EU.
+         *
          * @return void
          */
         public static function include_vat_check() {
@@ -366,11 +368,9 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     edd_set_error( 'taxedd-no-vat-number-error', __( 'If you are VAT registered, please enter a VAT number.', 'taxamoedd' ) );
                 }
 
-                $vatnumber = preg_replace( '/\s+/', '', $data['vat_number'] );
-
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
-                    $resp = taxedd_get_vat_details($vatnumber);
+                    $resp = taxedd_get_vat_details( $vatnumber );
 
                     if ( 1 != $resp['buyer_tax_number_valid'] ) {
                         edd_set_error( 'taxedd-invalid-vat-number', __( 'The VAT number is invalid. Please double check or untick the VAT Registered Box.', 'taxamoedd' ) );
@@ -391,15 +391,15 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         public static function check_self_declaration( $valid_data, $data ) {
             global $edd_options;
 
-	    if ( edd_get_cart_subtotal() == 0 ) {
+            if ( edd_get_cart_subtotal() == 0 ) {
                 return;
             }
 
-            if ( isset($data['edd_country'] ) ) {
+            if ( isset( $data['edd_country'] ) ) {
 
                 if ( $data['billing_country'] != $data['edd_country'] ) {
 
-                    if ( !isset($data['edd_self_declaration']) ) {
+                    if ( !isset( $data['edd_self_declaration'] ) ) {
                         edd_set_error( 'taxedd-no-self-declaration', __( 'Please confirm that the billing address is correct.', 'taxamoedd' ) );
                     }
 
@@ -407,7 +407,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             } else {
 
                 // Failback if we're unable to get an IP address location
-                if ( !isset($data['edd_self_declaration']) ) {
+                if ( !isset( $data['edd_self_declaration'] ) ) {
                     edd_set_error( 'taxedd-no-self-declaration', __( 'Please confirm that the billing address is correct.', 'taxamoedd' ) );
                 }
 
@@ -428,11 +428,11 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
 
             // Check if user is VAT Registered with a Valid number. If so, set the Tax to 0.
-            if ( isset( $_POST['vat_number'] ) && !empty($_POST['vat_number']) && "" !== $_POST['vat_number'] ) {
+            if ( isset( $_POST['vat_number'] ) && !empty( $_POST['vat_number'] ) && "" !== $_POST['vat_number'] ) {
 
-                $payment_meta['vat_number'] = preg_replace( '/\s+/', '', $_POST['vat_number']);
+                $payment_meta['vat_number'] = preg_replace( '/\s+/', '', $_POST['vat_number'] );
 
-                $vatarray = taxedd_get_vat_details($payment_meta['vat_number']);
+                $vatarray = taxedd_get_vat_details( $payment_meta['vat_number'] );
 
                 if ( isset( $vatarray['billing_country_code'] ) ) {
                     $payment_meta['vat_billing_country_code'] = $vatarray['billing_country_code'];
@@ -440,7 +440,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     $payment_meta['vat_billing_country_code'] = $payment_meta['user_info']['address']['country'];
                 }
                 // But if the base country is equal to the VAT Country code, add the tax on.
-                if ($edd_options['base_country'] == $payment_meta['vat_billing_country_code']) {
+                if ( $edd_options['base_country'] == $payment_meta['vat_billing_country_code'] ) {
                     $payment_meta['tax'] = $this->calculate_tax( $payment_meta['vat_billing_country_code'] );
                 }
 
@@ -493,46 +493,45 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
-                $purchase_data['post_data']['edd_vatreg'] )
-            {
+                $purchase_data['post_data']['edd_vatreg'] ) {
 
-                $vatarray = taxedd_get_vat_details($purchase_data['post_data']['vat_number']);
+                $vatarray = taxedd_get_vat_details( $purchase_data['post_data']['vat_number'] );
 
-                if ( isset($vatarray['billing_country_code'])) {
-                    $billingcc = $vatarray['billing_country_code'];
-                } else {
-                    $billingcc = $purchase_data['post_data']['billing_country'];
-                }
+            if ( isset( $vatarray['billing_country_code'] ) ) {
+                $billingcc = $vatarray['billing_country_code'];
+            } else {
+                $billingcc = $purchase_data['post_data']['billing_country'];
+            }
 
                 // Check if Base Country matches Billing Country, if not, remove the VAT
-                if ( $edd_options['base_country'] !== $billingcc ) {
-                    $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                    $purchase_data['tax'] = 0;
-                    $purchase_data['vat_billing_country_code'] = $billingcc;
+            if ( $edd_options['base_country'] !== $billingcc ) {
+                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                $purchase_data['tax'] = 0;
+                $purchase_data['vat_billing_country_code'] = $billingcc;
 
-                } else {
+            } else {
 
-                // Just double check tax again, with the new Billing Country Code
-                    $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                    $purchase_data['tax'] = $this->calculate_tax( $billingcc );
-                    $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
-                }
+                    // Just double check tax again, with the new Billing Country Code
+                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                $purchase_data['tax'] = $this->calculate_tax( $billingcc );
+                $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
             }
+        }
 
             // If there's a self declaration flag, recalculate tax.
-            if ( isset($purchase_data['post_data']['edd_self_declaration']) ) {
+        if ( isset( $purchase_data['post_data']['edd_self_declaration'] ) ) {
 
-                if ($purchase_data['post_data']['edd_self_declaration']) {
+            if ( $purchase_data['post_data']['edd_self_declaration'] ) {
 
-                    $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                    $purchase_data['tax'] = $this->calculate_tax( $purchase_data['user_info']['address']['country'] );
-                    $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
+                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                $purchase_data['tax'] = $this->calculate_tax( $purchase_data['user_info']['address']['country'] );
+                $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
 
-                }
             }
-
-            return $purchase_data;
         }
+
+        return $purchase_data;
+    }
 
         /**
          *
@@ -544,7 +543,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
         public static function submit_order_to_taxamo( $payment_id ) {
             global $edd_options;
 
-	    if ( edd_get_payment_meta( $payment_id, '_edd_payment_total', true ) == 0 ) {
+            if ( edd_get_payment_meta( $payment_id, '_edd_payment_total', true ) == 0 ) {
                 return;
             }
 
@@ -561,10 +560,10 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 try {
                     $taxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
-                // Basic payment meta
+                    // Basic payment meta
                     $payment_meta = edd_get_payment_meta( $payment_id );
 
-                // Cart details
+                    // Cart details
                     $cart_items = edd_get_payment_meta_cart_details( $payment_id );
 
                     $date = strtotime( $payment_meta['date'] );
@@ -602,7 +601,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                         $transaction->buyer_tax_number = $payment_meta['vat_number'];
 
                         // We don't deduct tax for VAT Registered sales within the same country.
-                        if ($payment_meta['vat_billing_country_code'] == $edd_options['base_country']) {
+                        if ( $payment_meta['vat_billing_country_code'] == $edd_options['base_country'] ) {
 
                             $transaction->tax_deducted = false;
 
@@ -613,12 +612,12 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                         }
                     }
 
-                // Set Username
+                    // Set Username
                     if ( isset( $payment_meta['user_info']['first_name'] ) && isset( $payment_meta['user_info']['last_name'] ) ) {
                         $transaction->buyer_name = $payment_meta['user_info']['first_name'] . " " . $payment_meta['user_info']['last_name'];
                     }
 
-                // Build The Address
+                    // Build The Address
                     $address = array();
 
                     if ( isset( $payment_meta['user_info']['address']['line1'] ) && !empty( $payment_meta['user_info']['address']['line1'] )  && "" !== ( $payment_meta['user_info']['address']['line1'] ) ) {
@@ -659,7 +658,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                     $transactionkey = array( 'taxamo_transaction_key' => $resp->transaction->key );
                     $transactionlines = array();
 
-                // Get all Transaction Lines and add keys to site.
+                    // Get all Transaction Lines and add keys to site.
                     foreach ( $resp->transaction->transaction_lines as $transaction_line ) {
 
                         $temptransactionline = array(
@@ -673,7 +672,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
                     $payment_meta = array_merge( $payment_meta, $transactionkey );
                     $payment_meta = array_merge( $payment_meta,
-                        array( 'taxamo_transaction_lines' => $transactionlines));
+                        array( 'taxamo_transaction_lines' => $transactionlines ) );
 
                 } catch ( Exception $e ) {
 
@@ -693,6 +692,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
         /**
          * Filter to display tax. This is done based on address, if not present it's done on IP address.
+         *
          * @return void
          */
         public function calculate_tax_filter() {
@@ -706,14 +706,15 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
         /**
          * Function to calculate tax, usually used for VAT calculation.
-         * @param  string $countrycode 2 Letter Country Code
+         *
+         * @param string  $countrycode 2 Letter Country Code
          * @return float  $resp->transaction->tax_amount the amount of tax paid.
          */
         public function calculate_tax( $countrycode = "" ) {
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                return $this->get_api_response_calculate_tax();
+                return $this->get_api_response_calculate_tax( $countrycode );
             }
         }
 
@@ -789,13 +790,34 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
         /**
          * Retrieve the results from the Taxamo api's calculateTax lookup
-         *
+         * 
+         * @param string  $countrycode 2 Letter Country Code
          * @return array
          */
-        public function get_api_response_calculate_tax() {
+        public function get_api_response_calculate_tax( $countrycode = "" ) {
 
-            if ( $this->get_cached_api_response( 'calculate_tax' ) !== false ) {
-                return $this->get_cached_api_response( 'calculate_tax' );
+            $cachedcountrycode = "";
+
+            if ( isset( $this->api_responses['countrycode'] ) ) {
+                $cachedcountrycode = $this->api_responses['countrycode'];
+            }
+
+            if ( !$countrycode ) {
+                $address = edd_get_customer_address();
+
+                if ( isset( $address['country'] ) && !empty( $address['country'] ) && "" !== $address['country'] ) {
+                    $countrycode = $address['country'];
+                } else {
+                    $ipcc = taxedd_get_country_code();
+                    $countrycode = $ipcc->country_code;
+                }
+            }
+
+            // Check if the country code is present, and the same, if so, try to get the cached tax.
+            if ( $cachedcountrycode == $countrycode ) {
+                if ( $this->get_cached_api_response( 'calculate_tax' ) !== false ) {
+                    return $this->get_cached_api_response( 'calculate_tax' );
+                }
             }
 
             global $edd_options;
@@ -806,17 +828,6 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 $taxtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
 
                 $cart_items = edd_get_cart_content_details();
-
-                $countrycode = "";
-
-                $address = edd_get_customer_address();
-
-                if ( isset($address['country']) && !empty($address['country']) && "" !== $address['country'] ) {
-                    $countrycode = $address['country'];
-                } else {
-                    $ipcc = taxedd_get_country_code();
-                    $countrycode = $ipcc->country_code;
-                }
 
                 $transaction = new Input_transaction();
                 $transaction->currency_code = edd_get_currency();
@@ -843,6 +854,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
                 $resp = $taxtaxamo->calculateTax( array( 'transaction' => $transaction ) );
 
                 $this->api_responses['calculate_tax'] = $resp->transaction->tax_amount;
+                $this->api_responses['countrycode'] = $countrycode;
 
                 return $this->api_responses['calculate_tax'];
 
@@ -910,6 +922,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
      */
     /**
      * Unset all session functions.
+     *
      * @return void
      */
     function unset_sessions() {
