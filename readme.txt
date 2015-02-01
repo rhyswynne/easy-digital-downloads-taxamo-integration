@@ -48,6 +48,11 @@ Why don't you?
 
 == Changelog ==
 
+= 1.3 =
+* Improved speed of the plugin, a lot less API calls!
+
+Thanks to [Nate Wright](http://themeofthecrop.com) for his work on this update!
+
 = 1.2 =
 * Returns correct tax rate should discount codes be used.
 * Transactions that are free downloads are not submitted to Taxamo

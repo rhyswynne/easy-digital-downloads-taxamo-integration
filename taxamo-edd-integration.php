@@ -307,12 +307,22 @@ return array_merge( $settings, $new_settings );
          */
         public static function include_confirmation_checkbox() {
 
-            $address = edd_get_customer_address();
+            $logged_in = is_user_logged_in();
+
+            if( $logged_in ) {
+                $user_address = get_user_meta( get_current_user_id(), '_edd_user_address', true );
+            }
+
+            $selected_country = edd_get_shop_country();
             $taxamo = taxedd_get_country_code();
             $stylecss = "";
 
+            if( $logged_in && ! empty( $user_address['country'] ) && '*' !== $user_address['country'] ) {
+                $selected_country = $user_address['country'];
+            }
+
             if ( isset( $taxamo ) ) {
-                if ( $taxamo->country_code == $address['country'] ) {
+                if ( $taxamo->country_code == $selected_country ) {
                     $stylecss = ' style="display: none;"';
                 }
             }

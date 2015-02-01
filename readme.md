@@ -30,6 +30,10 @@ Installation
 
 Credits
 =======
+1.3
+---
+* Thanks to [Nate Wright](http://themeofthecrop.com) for his work on reducing the API calls.
+
 1.2
 ---
 * Thanks to [Eric Daams](http://164a.com/) for his work on this update surrounding free transactions!
