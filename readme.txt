@@ -25,7 +25,7 @@ The plugin has been translated to the following languages.
 * Finnish - [Sami Keijonen](https://foxland.fi/) [@samikeijonen](https://twitter.com/samikeijonen)
 * French - [Fx Bénard](http://fxbenard.com/) [@fxbenard](https://twitter.com/fxbenard)
 
-To contribute a translation, you can do so by [checking out the project on Transiflex](https://www.transifex.com/projects/p/easy-digital-downloads-taxamo-integration/)
+To contribute a translation, you can do so by [checking out the project on Transifex](https://www.transifex.com/projects/p/easy-digital-downloads-taxamo-integration/)
 
 = About Winwar Media =
 This plugin is made by [**Winwar Media**](http://winwar.co.uk/), a WordPress Development and Training Agency in Manchester, UK.
