@@ -779,22 +779,28 @@ return array_merge( $settings, $new_settings );
 
             // Get Taxamo Tansaction Key.
             $payment_meta = edd_get_payment_meta( $payment_id );
-            $taxamo_transaction_lines = $payment_meta['taxamo_transaction_lines'];
-            $transaction_key = $payment_meta['taxamo_transaction_key'];
+            $taxamo_transaction_lines = "";
+            $taxamo_transaction_key = "";
 
-            // Get Order Total and create an array for it.
-            foreach ( $taxamo_transaction_lines as $taxamo_transaction_line ) {
-                $line_key = $taxamo_transaction_line['taxamo_line_key'];
-                $amount = $taxamo_transaction_line['taxamo_total_amount'];
+            if ( isset( $payment_meta['taxamo_transaction_key'] ) ) {
 
-                $taxamo_body_array = array( "total_amount"=>$amount,
-                    "line_key" => $line_key );
-                $taxamo_body_json = json_encode( $taxamo_body_array );
+                $taxamo_transaction_lines = $payment_meta['taxamo_transaction_lines'];
+                $transaction_key = $payment_meta['taxamo_transaction_key'];
+
+                // Get Order Total and create an array for it.
+                foreach ( $taxamo_transaction_lines as $taxamo_transaction_line ) {
+                    $line_key = $taxamo_transaction_line['taxamo_line_key'];
+                    $amount = $taxamo_transaction_line['taxamo_total_amount'];
+
+                    $taxamo_body_array = array( "total_amount"=>$amount,
+                        "line_key" => $line_key );
+                    $taxamo_body_json = json_encode( $taxamo_body_array );
 
                 // Create Taxamo Object and Submit a refund
-                $private_key = $edd_options['taxedd_private_token'];
-                $refundtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
-                $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
+                    $private_key = $edd_options['taxedd_private_token'];
+                    $refundtaxamo = new Taxamo( new APIClient( $private_key, 'https://api.taxamo.com' ) );
+                    $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
+                }
             }
         }
 

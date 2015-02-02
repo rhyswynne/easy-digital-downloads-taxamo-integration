@@ -50,6 +50,8 @@ Why don't you?
 
 = 1.3 =
 * Improved speed of the plugin, a lot less API calls!
+* If the user's IP matches the shop location, we don't automatically show the automatic box.
+* Fixes a bug so that if you have an order placed before the plugin is created that is refunded, no errors appear.
 
 Thanks to [Nate Wright](http://themeofthecrop.com) for his work on this update!
 
