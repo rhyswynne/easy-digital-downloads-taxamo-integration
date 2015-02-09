@@ -50,10 +50,12 @@ Why don't you?
 
 = 1.3 =
 * Improved speed of the plugin, a lot less API calls!
-* If the user's IP matches the shop location, we don't automatically show the automatic box.
+* If the user's IP matches the shop location, we don't automatically show the confirmation box.
 * Fixes a bug so that if you have an order placed before the plugin is created that is refunded, no errors appear.
 
 Thanks to [Nate Wright](http://themeofthecrop.com) for his work on this update!
+
+*Time Taken - 3 1/2 hours+*
 
 = 1.2 =
 * Returns correct tax rate should discount codes be used.
@@ -63,7 +65,7 @@ Thanks to [Nate Wright](http://themeofthecrop.com) for his work on this update!
 
 Thanks to [Eric Daams](http://164a.com/) & [Fx Bénard](http://fxbenard.com/) for his work on this update!
 
-* Time Taken - 1 hour+ *
+*Time Taken - 1 hour+*
 
 = 1.1 =
 * Code Cleanup - removed a lot of redundant files
@@ -74,17 +76,17 @@ Thanks to [Eric Daams](http://164a.com/) & [Fx Bénard](http://fxbenard.com/) fo
 
 A big thank you to [Foxland](https://foxland.fi/) and [@samikeijonen](https://twitter.com/samikeijonen) for his work on this update!
 
-* Time Taken - 1 1/2 hours+ *
+*Time Taken - 1 1/2 hours+*
 
 = 1.0.2 =
 * Remove warning on sitewide carts if cart is empty.
 
-* Time Taken - 16 minutes *
+*Time Taken - 16 minutes*
 
 = 1.0.1 =
 * First Push to the WordPress.org repository.
 
-* Time Taken - 23 hours *
+*Time Taken - 23 hours*
 
 = 1.0 =
 * First release
