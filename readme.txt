@@ -48,6 +48,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.3.1 =
+* Uses the EDD Customer IP rather than the IP, stops wrong information being recorded with some orders.
+
 = 1.3 =
 * Improved speed of the plugin, a lot less API calls!
 * If the user's IP matches the shop location, we don't automatically show the confirmation box.
