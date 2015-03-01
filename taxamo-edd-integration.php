@@ -576,6 +576,8 @@ return array_merge( $settings, $new_settings );
                     // Cart details
                     $cart_items = edd_get_payment_meta_cart_details( $payment_id );
 
+                    $ip = edd_get_payment_user_ip( $payment_id );
+
                     $date = strtotime( $payment_meta['date'] );
 
                     $transactionarray = array();
@@ -594,7 +596,7 @@ return array_merge( $settings, $new_settings );
                     $transaction = new Input_transaction();
 
                     $transaction->currency_code = $payment_meta['currency'];
-                    $transaction->buyer_ip = $_SERVER['REMOTE_ADDR'];
+                    $transaction->buyer_ip = $ip;
                     $transaction->billing_country_code = $payment_meta['user_info']['address']['country'];
                     $transaction->buyer_email = $payment_meta['email'];
                     $transaction->original_transaction_key = $payment_meta['key'];
