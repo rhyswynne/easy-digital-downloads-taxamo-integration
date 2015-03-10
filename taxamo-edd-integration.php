@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.3.1
+ * Version:         1.4-beta
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -137,7 +137,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             // EDD Hooks
             add_filter( 'edd_settings_taxes', array( $this, 'settings' ), 1 );
 
-            add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax_filter' ) );
+            add_filter( 'edd_get_cart_tax', array( $this, 'calculate_tax_filter' ), 10, 1 );
             add_action( 'edd_cc_billing_top', array( $this, 'include_introduction_paragraph' ) );
             add_action( 'edd_cc_billing_bottom', array( $this, 'include_confirmation_checkbox' ), 15, 2 );
 
@@ -478,7 +478,7 @@ return array_merge( $settings, $new_settings );
             // Set self declaration flag if needed.
             if ( isset( $_POST['edd_self_declaration'] ) ) {
 
-                $payment_meta['self_declaration'] = $_POST['edd_self_declaration'];
+                $payment_meta['self_declaration'] = esc_attr( $_POST['edd_self_declaration'] );
 
             }
 
@@ -723,11 +723,18 @@ return array_merge( $settings, $new_settings );
          *
          * @return void
          */
-        public function calculate_tax_filter() {
+        public function calculate_tax_filter( $carttax ) {
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                return $this->get_api_response_calculate_tax();
+                
+                $tax = $this->get_api_response_calculate_tax();
+
+                if ( $tax != 0 ) {
+                    return $tax;
+                } else {
+                    return $carttax;
+                }
             }
         }
 
@@ -742,7 +749,14 @@ return array_merge( $settings, $new_settings );
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                return $this->get_api_response_calculate_tax( $countrycode );
+                $tax = $this->get_api_response_calculate_tax( $countrycode );
+
+                if ( $tax != 0 || $this->check_if_eu( $countrycode ) ) {
+                    return $tax;
+                } else {
+                    return edd_get_cart_tax();
+                }
+ 
             }
         }
 
@@ -947,6 +961,54 @@ return array_merge( $settings, $new_settings );
                     return $this->api_responses[ $type ][ $id ];
                 }
             }
+        }
+
+
+        /**
+         * Check if the country is in the EU
+         * @param  string countrycode   the country code is present
+         * @return bool                 see if the country code is in the EU
+         */
+        public function check_if_eu( $countrycode = "" ) {
+            $countries = array(
+                'AT',
+                'BE',
+                'BG',
+                'CY',
+                'CZ',
+                'DE',
+                'DK',
+                'EE',
+                'EL',
+                'ES',
+                'FI',
+                'FR',
+                'GB',
+                'GR',
+                'HR',
+                'HU',
+                'IE',
+                'IT',
+                'LT',
+                'LU',
+                'LV',
+                'MT',
+                'NL',
+                'PL',
+                'PT',
+                'RO',
+                'SE',
+                'SI',
+                'SK',
+            );
+
+            foreach ( $countries as $country ) {
+                if ( $country == $countrycode ) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
