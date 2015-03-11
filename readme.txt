@@ -48,6 +48,12 @@ Why don't you?
 
 == Changelog ==
 
+= 1.4 =
+* Allows tax to fall back should Taxamo returns zero. Useful for non EU companies using the system if they have alternate tax defined.
+* Tested with Easy Digital Downloads 2.3
+
+*Time Taken - 1 hour*
+
 = 1.3.1 =
 * Uses the EDD Customer IP rather than the IP, stops wrong information being recorded with some orders.
 

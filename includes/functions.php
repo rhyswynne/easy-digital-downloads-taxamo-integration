@@ -1,19 +1,19 @@
 <?php
 
 // Exit if accessed directly
-if( !defined( 'ABSPATH' ) ) exit;
+if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Get the country code from the IP address
  *
- * @param string  	$ip 			IP address, defaults to user if not present.
- * @global Array 	$edd_options   	Array of all the EDD Options
- * @return array 	$bodyarray 		Returned array from Taxamo API.
+ * @param string  $ip IP address, defaults to user if not present.
+ * @global Array  $edd_options    Array of all the EDD Options
+ * @return array  $bodyarray   Returned array from Taxamo API.
  */
 function taxedd_get_country_code( $ip = "" ) {
 	global $edd_options;
 
-	if (isset( $edd_options['taxedd_private_token'] )) {
+	if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
 		$private_key = $edd_options['taxedd_private_token'];
 
@@ -28,15 +28,14 @@ function taxedd_get_country_code( $ip = "" ) {
 		}
 		$taxresponse = EDD_Taxamo_EDD_Integration_load()->get_api_response_geoip( $ip, $private_key );
 
-		if( ! is_wp_error( $taxresponse )
-			&& isset( $taxresponse['response']['code'] )        
-			&& 200 === $taxresponse['response']['code'] )
-		{
+		if ( ! is_wp_error( $taxresponse )
+			&& isset( $taxresponse['response']['code'] )
+			&& 200 === $taxresponse['response']['code'] ) {
 			$body = wp_remote_retrieve_body( $taxresponse );
-			$bodyarray = json_decode( $body ); 
-			return $bodyarray;
-		}
+		$bodyarray = json_decode( $body );
+		return $bodyarray;
 	}
+}
 }
 
 
@@ -44,29 +43,34 @@ function taxedd_get_country_code( $ip = "" ) {
 
 /**
  * Get the VAT Details
- * @param  string $vatnumber the VAT Number to begin with.
- * @return array 	$bodyarray 		Returned array from Taxamo API.
+ *
+ * @param string  $vatnumber the VAT Number to begin with.
+ * @return array  $bodyarray   Returned array from Taxamo API.
  */
-function taxedd_get_vat_details($vatnumber) {
-	
-	global $edd_options; 
+function taxedd_get_vat_details( $vatnumber ) {
 
-	if (isset( $edd_options['taxedd_private_token'] )) {
+	global $edd_options;
+
+	if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
 		$private_key = $edd_options['taxedd_private_token'];
+
+		$vatnumber = sanitize_title( $vatnumber );
+		$vatnumber = str_replace( '-', '', $vatnumber );
+		$vatnumber = strtoupper( $vatnumber );
+
 		$taxresponse = EDD_Taxamo_EDD_Integration_load()->get_api_response_vat_details( $vatnumber, $private_key );
 
-		if( ! is_wp_error( $taxresponse )
-			&& isset( $taxresponse['response']['code'] )        
-			&& 200 === $taxresponse['response']['code'] )
-		{
+		if ( ! is_wp_error( $taxresponse )
+			&& isset( $taxresponse['response']['code'] )
+			&& 200 === $taxresponse['response']['code'] ) {
 			$body = wp_remote_retrieve_body( $taxresponse );
-			$bodyarray = json_decode( $body, true ); 
-			return $bodyarray;
-		}
+		$bodyarray = json_decode( $body, true );
+		return $bodyarray;
 	}
+}
 
-	$bodyarray = array( 'buyer_tax_number_valid' => false );
+$bodyarray = array( 'buyer_tax_number_valid' => false );
 
-	return $bodyarray;
+return $bodyarray;
 }

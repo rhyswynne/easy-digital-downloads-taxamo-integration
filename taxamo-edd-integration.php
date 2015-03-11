@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.4-beta
+ * Version:         1.4
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -396,6 +396,7 @@ return array_merge( $settings, $new_settings );
 
                 if ( isset( $edd_options['taxedd_private_token'] ) ) {
 
+                    $vatnumber = $data['vat_number'];
                     $resp = taxedd_get_vat_details( $vatnumber );
 
                     if ( 1 != $resp['buyer_tax_number_valid'] ) {
@@ -520,7 +521,6 @@ return array_merge( $settings, $new_settings );
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) {
-
                 $vatarray = taxedd_get_vat_details( $purchase_data['post_data']['vat_number'] );
 
             if ( isset( $vatarray['billing_country_code'] ) ) {
@@ -727,7 +727,7 @@ return array_merge( $settings, $new_settings );
             global $edd_options;
 
             if ( isset( $edd_options['taxedd_private_token'] ) ) {
-                
+
                 $tax = $this->get_api_response_calculate_tax();
 
                 if ( $tax != 0 ) {
@@ -756,7 +756,7 @@ return array_merge( $settings, $new_settings );
                 } else {
                     return edd_get_cart_tax();
                 }
- 
+
             }
         }
 
@@ -1000,7 +1000,7 @@ return array_merge( $settings, $new_settings );
                 'SE',
                 'SI',
                 'SK',
-            );
+                );
 
             foreach ( $countries as $country ) {
                 if ( $country == $countrycode ) {
