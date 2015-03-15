@@ -145,7 +145,7 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
 
             add_filter( 'edd_checkout_error_checks', array( $this, 'check_self_declaration' ), 10, 2 );
             add_filter( 'edd_payment_meta', array( $this, 'store_eu_data' ) );
-            add_action( 'edd_purchase_data_before_gateway', array( $this, 'modify_tax' ), 10, 2 );
+            add_action( 'edd_purchase_data_before_gateway', array( $this, 'modify_tax' ), 999999, 2 );
             add_action( 'edd_complete_purchase', array( $this, 'submit_order_to_taxamo' ) );
 
             add_action( 'edd_update_payment_status', array( $this, 'submit_refund_to_taxamo' ), 200, 3 );
@@ -518,6 +518,8 @@ return array_merge( $settings, $new_settings );
         public function modify_tax( $purchase_data, $valid_data ) {
             global $edd_options;
 
+            $alreadyvatchecked = FALSE;
+
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) {
@@ -531,21 +533,30 @@ return array_merge( $settings, $new_settings );
 
                 // Check if Base Country matches Billing Country, if not, remove the VAT
             if ( $edd_options['base_country'] !== $billingcc ) {
+
+                $old_data = $purchase_data;
+
                 $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
                 $purchase_data['tax'] = 0;
                 $purchase_data['vat_billing_country_code'] = $billingcc;
 
+                $alreadyvatchecked = TRUE;
+
+
             } else {
 
-                    // Just double check tax again, with the new Billing Country Code
+                // Just double check tax again, with the new Billing Country Code
                 $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
                 $purchase_data['tax'] = $this->calculate_tax( $billingcc );
                 $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
+
+                $alreadyvatchecked = TRUE;
+
             }
         }
 
-            // If there's a self declaration flag, recalculate tax.
-        if ( isset( $purchase_data['post_data']['edd_self_declaration'] ) ) {
+            // If there's a self declaration flag AND there isn't a , recalculate tax.
+        if ( isset( $purchase_data['post_data']['edd_self_declaration'] ) && !$alreadyvatchecked ) {
 
             if ( $purchase_data['post_data']['edd_self_declaration'] ) {
 
