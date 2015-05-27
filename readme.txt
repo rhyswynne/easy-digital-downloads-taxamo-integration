@@ -3,7 +3,7 @@ Contributors: rhyswynne
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me
 Requires at least: 3.9.2
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: trunk
 
 This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital Downloads.
@@ -47,6 +47,9 @@ Why don't you?
 
 
 == Changelog ==
+
+= 1.4.1 =
+* Fixes a small bug that if you cannot check out if your cart total is zero because of a discount code, when checking out in a country that doesn't match your IP address.
 
 = 1.4 =
 * Allows tax to fall back should Taxamo returns zero. Useful for non EU companies using the system if they have alternate tax defined.

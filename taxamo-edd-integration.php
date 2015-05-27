@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.4
+ * Version:         1.4.1-beta
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -418,7 +418,7 @@ return array_merge( $settings, $new_settings );
         public static function check_self_declaration( $valid_data, $data ) {
             global $edd_options;
 
-            if ( edd_get_cart_subtotal() == 0 ) {
+            if ( edd_get_cart_total() == 0 ) {
                 return;
             }
 
