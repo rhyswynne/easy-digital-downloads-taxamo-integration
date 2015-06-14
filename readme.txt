@@ -48,8 +48,11 @@ Why don't you?
 
 == Changelog ==
 
-= 1.4.1 =
+= 1.5 =
+* Allows the ability to set prices inclusive of tax, rather than simply exclusive.
 * Fixes a small bug that if you cannot check out if your cart total is zero because of a discount code, when checking out in a country that doesn't match your IP address.
+
+*Time Taken - 6 hours, 30 minutes*
 
 = 1.4 =
 * Allows tax to fall back should Taxamo returns zero. Useful for non EU companies using the system if they have alternate tax defined.
