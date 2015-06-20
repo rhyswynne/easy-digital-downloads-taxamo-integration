@@ -48,6 +48,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.5.1 =
+* Fixes bug that reports incorrect values for non-EU based orders but with other tax rates, with Inclusive pricing switched on.
+
 = 1.5 =
 * Allows the ability to set prices inclusive of tax, rather than simply exclusive.
 * Fixes a small bug that if you cannot check out if your cart total is zero because of a discount code, when checking out in a country that doesn't match your IP address.

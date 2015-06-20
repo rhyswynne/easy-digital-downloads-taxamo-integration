@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.5
+ * Version:         1.5.1-beta
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk
  * Text Domain:     taxamo-edd-integration
@@ -575,12 +575,13 @@ return array_merge( $settings, $new_settings );
             }
         }
 
-        // Now do checks if we includ tax
+        // Now do checks if we include tax
         if ( "yes" == $edd_options['checkout_include_tax'] ) {
 
             // Check if we have a Valid VAT number, if so, remove the tax.
             if ( isset( $purchase_data['post_data']['vat_number'] ) && !empty( $purchase_data['post_data']['vat_number'] ) && "" !== $purchase_data['post_data']['vat_number'] &&
                 $purchase_data['post_data']['edd_vatreg'] ) {
+
                 $vatarray = taxedd_get_vat_details( $purchase_data['post_data']['vat_number'] );
 
             if ( isset( $vatarray['billing_country_code'] ) ) {
@@ -638,157 +639,146 @@ return array_merge( $settings, $new_settings );
 
             } else {
 
-                /* Just double check tax again, with the new Billing Country Code
-                $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
-                $purchase_data['tax'] = $this->calculate_tax( $billingcc );
-                $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
-                */
+                    /* Just double check tax again, with the new Billing Country Code
+                    $purchase_data['price'] = $purchase_data['price'] - $purchase_data['tax'];
+                    $purchase_data['tax'] = $this->calculate_tax( $billingcc );
+                    $purchase_data['price'] = $purchase_data['price'] + $purchase_data['tax'];
+                    */
 
-                $tax_rate_array = $this->get_api_response_calculate_tax_rate();
+                    $tax_rate_array = $this->get_api_response_calculate_tax_rate();
 
-                $totalsubtotal  = 0;
-                $totaltax       = 0;
-                $totalprice     = 0;
-                $totaldiscount  = 0;
+                    $totalsubtotal  = 0;
+                    $totaltax       = 0;
+                    $totalprice     = 0;
+                    $totaldiscount  = 0;
 
-                for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
+                    for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
 
-                    $tax = $tax_rate_array[ $x ];
-                    $var = '1.' . $tax;
-                    $float = floatval( $var );
+                        $tax = $tax_rate_array[ $x ];
+                        $var = '1.' . $tax;
+                        $float = floatval( $var );
 
-                    $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
-                    $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
-                    $tax_deducted   = $old_item_price - $new_item_price;
+                        $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
+                        $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
+                        $tax_deducted   = $old_item_price - $new_item_price;
 
-                    $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
-                    $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
+                        $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
 
-                    $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
-                    $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
-                    $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
-                    $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
+                        $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
+                        $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
+                        $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
+                        $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
+
+                    }
+
+                    $purchase_data['subtotal']  = $totalsubtotal;
+                    $purchase_data['discount']  = $totaldiscount;
+                    $purchase_data['tax']       = $totaltax;
+                    $purchase_data['price']     = $totalprice;
+
+                    $alreadyvatchecked = TRUE;
 
                 }
-
-                $purchase_data['subtotal']  = $totalsubtotal;
-                $purchase_data['discount']  = $totaldiscount;
-                $purchase_data['tax']       = $totaltax;
-                $purchase_data['price']     = $totalprice;
-
-                $alreadyvatchecked = TRUE;
-
             }
-        }
 
             // If there's a self declaration flag AND we haven't already calculated tax, calculate tax.
-        if ( isset( $purchase_data['post_data']['edd_self_declaration'] ) && !$alreadyvatchecked ) {
+            if ( isset( $purchase_data['post_data']['edd_self_declaration'] ) && !$alreadyvatchecked ) {
 
-            if ( $purchase_data['post_data']['edd_self_declaration'] ) {
+                if ( $this->check_if_eu( $purchase_data['user_info']['address']['country'] ) ) {
 
-                //$purchase_data['tax'] = $this->calculate_tax( $purchase_data['user_info']['address']['country'] );
+                    if ( $purchase_data['post_data']['edd_self_declaration'] ) {
 
-                $tax_rate_array = $this->get_api_response_calculate_tax_rate( $purchase_data['user_info']['address']['country'] );
-                /*
+                        $tax_rate_array = $this->get_api_response_calculate_tax_rate( $purchase_data['user_info']['address']['country'] );
 
-                for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
 
-                    $tax = $tax_rate_array[ $x ];
-                    $var = '1.' . $tax;
-                    $float = floatval( $var );
+                        $totalsubtotal  = 0;
+                        $totaltax       = 0;
+                        $totalprice     = 0;
+                        $totaldiscount  = 0;
 
-                    $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
+                        for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
 
-                    $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
-                    $purchase_data['cart_details'][$x]['tax']           = round( $purchase_data['tax'], edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['tax'], edd_currency_decimal_filter() );
+                            $tax = $tax_rate_array[ $x ];
+                            $var = '1.' . $tax;
+                            $float = floatval( $var );
 
-                } */
+                            $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
+                            $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
+                            $tax_deducted   = $old_item_price - $new_item_price;
 
-                $totalsubtotal  = 0;
-                $totaltax       = 0;
-                $totalprice     = 0;
-                $totaldiscount  = 0;
+                            $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
+                            $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
+                            $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
+                            $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
+                            $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
 
-                for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
+                            $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
+                            $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
+                            $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
+                            $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
 
-                    $tax = $tax_rate_array[ $x ];
-                    $var = '1.' . $tax;
-                    $float = floatval( $var );
+                        }
 
-                    $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
-                    $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
-                    $tax_deducted   = $old_item_price - $new_item_price;
-
-                    $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
-                    $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
-                    $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
-
-                    $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
-                    $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
-                    $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
-                    $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
+                        $purchase_data['subtotal']  = $totalsubtotal;
+                        $purchase_data['discount']  = $totaldiscount;
+                        $purchase_data['tax']       = $totaltax;
+                        $purchase_data['price']     = $totalprice;
+                    }
 
                 }
 
-                $purchase_data['subtotal']  = $totalsubtotal;
-                $purchase_data['discount']  = $totaldiscount;
-                $purchase_data['tax']       = $totaltax;
-                $purchase_data['price']     = $totalprice;
+                $alreadyvatchecked = TRUE;
             }
 
-            $alreadyvatchecked = TRUE;
-        }
+            if ( !$alreadyvatchecked ) { 
 
-        if ( !$alreadyvatchecked ) { 
+                if ( $this->check_if_eu( $purchase_data['user_info']['address']['country'] ) ) {
 
-            $tax_rate_array = $this->get_api_response_calculate_tax_rate();
-            $totalsubtotal  = 0;
-            $totaltax       = 0;
-            $totalprice     = 0;
-            $totaldiscount  = 0;
+                    $tax_rate_array = $this->get_api_response_calculate_tax_rate();
 
-            for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
+                    $totalsubtotal  = 0;
+                    $totaltax       = 0;
+                    $totalprice     = 0;
+                    $totaldiscount  = 0;
 
-                $tax = $tax_rate_array[ $x ];
-                $var = '1.' . $tax;
-                $float = floatval( $var );
+                    for ( $x = 0; $x < sizeof( $purchase_data['cart_details'] ); $x++ ) {
 
-                $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
-                $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
-                $tax_deducted   = $old_item_price - $new_item_price;
+                        $tax = $tax_rate_array[ $x ];
+                        $var = '1.' . $tax;
+                        $float = floatval( $var );
 
-                $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
-                $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
-                $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
-                $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
-                $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
+                        $old_item_price = $purchase_data['cart_details'][$x]['item_price'];
+                        $new_item_price = $purchase_data['cart_details'][$x]['item_price'] / $float;
+                        $tax_deducted   = $old_item_price - $new_item_price;
 
-                $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
-                $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
-                $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
-                $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
+                        $purchase_data['cart_details'][$x]['item_price']    = round( $new_item_price, edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['discount']      = edd_get_cart_item_discount_amount( $purchase_data['cart_details'][$x]['item_number'] );
+                        $purchase_data['cart_details'][$x]['tax']           = round( $tax_deducted, edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['subtotal']      = round( $purchase_data['cart_details'][$x]['item_price'] * $purchase_data['cart_details'][$x]['quantity'], edd_currency_decimal_filter() );
+                        $purchase_data['cart_details'][$x]['price']         = round( $purchase_data['cart_details'][$x]['subtotal'] - $purchase_data['cart_details'][$x]['discount'] + $purchase_data['cart_details'][$x]['tax'], edd_currency_decimal_filter() );
 
+                        $totalsubtotal                                      = $totalsubtotal + $purchase_data['cart_details'][$x]['subtotal'];
+                        $totaltax                                           = $totaltax + $purchase_data['cart_details'][$x]['tax'];
+                        $totalprice                                         = $totalprice + $purchase_data['cart_details'][$x]['price'];
+                        $totaldiscount                                      = $totaldiscount + $purchase_data['cart_details'][$x]['discount'];
+
+                    }
+
+                    $purchase_data['subtotal']  = $totalsubtotal;
+                    $purchase_data['discount']  = $totaldiscount;
+                    $purchase_data['tax']       = $totaltax;
+                    $purchase_data['price']     = $totalprice;
+
+                }
             }
-
-            $purchase_data['subtotal']  = $totalsubtotal;
-            $purchase_data['discount']  = $totaldiscount;
-            $purchase_data['tax']       = $totaltax;
-            $purchase_data['price']     = $totalprice;
-
-            //wp_die( print_r( $purchase_data ) );
         }
+
+        return $purchase_data;
     }
-
-    return $purchase_data;
-}
 
         /**
          *
@@ -993,8 +983,28 @@ return array_merge( $settings, $new_settings );
             global $edd_options;
 
             if ( "yes" == $edd_options['checkout_include_tax'] ) {
-                $tax = edd_get_cart_tax();
-                $cartamount = $cartamount - $tax;
+
+                $logged_in = is_user_logged_in();
+
+                $country = "";
+
+                if( $logged_in ) {
+                    $user_address = get_user_meta( get_current_user_id(), '_edd_user_address', true );
+                    if ( !empty( $user_address['country'] ) && '*' !== $user_address['country'] ) {
+                        $country = $user_address['country'];                        
+                    }
+                }
+
+                if ( !$country ) {
+                    $taxamo = taxedd_get_country_code();
+                    $country = $taxamo->country_code;
+                }
+
+                if ( $this->check_if_eu( $country ) ) {
+                    $tax = edd_get_cart_tax();
+                    $cartamount = $cartamount - $tax;
+                }
+
             }
 
             return $cartamount;
@@ -1197,7 +1207,7 @@ return array_merge( $settings, $new_settings );
                     $tax_rate_array[] = $transaction_line_tax_rate->tax_rate;
                 }
 
-                $this->api_responses['tax_rate'] = $tax_rate_array;
+                $this->api_responses['tax_rate'] = $tax_rate_array; 
 
                 return $this->api_responses['calculate_tax'];
 
@@ -1235,6 +1245,7 @@ return array_merge( $settings, $new_settings );
 
             // Check if the country code is present, and the same, if so, try to get the cached tax.
             if ( $cachedcountrycode == $countrycode ) {
+
                 if ( $this->get_cached_api_response( 'tax_rate' ) !== false ) { 
 
                     return $this->get_cached_api_response( 'tax_rate' );
