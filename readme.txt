@@ -3,7 +3,7 @@ Contributors: rhyswynne
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me
 Requires at least: 3.9.2
-Tested up to: 4.2
+Tested up to: 4.2.3
 Stable tag: trunk
 
 This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital Downloads.
@@ -50,6 +50,7 @@ Why don't you?
 
 = 1.6 =
 * Added the ability to disable custom ID & custom invoicing, allowing Taxamo to set these values.
+* Updated the Taxamo integration script to 1.0.22.
 
 = 1.5.1 =
 * Fixes bug that reports incorrect values for non-EU based orders but with other tax rates, with Inclusive pricing switched on.

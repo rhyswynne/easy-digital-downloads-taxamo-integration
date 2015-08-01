@@ -1,0 +1,176 @@
+# Copyright (C) 2015 Winwar Media
+# This file is distributed under the same license as the Easy Digital Downloads - Taxamo Integration package.
+# Translators:
+# Kristian Norling <kristian@intrateam.se>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Digital Downloads - Taxamo Integration\n"
+"Report-Msgid-Bugs-To: http://wp-translations.org/\n"
+"POT-Creation-Date: 2015-01-28 13:34:41+00:00\n"
+"PO-Revision-Date: 2015-04-06 17:13+0000\n"
+"Last-Translator: Kristian Norling <kristian@intrateam.se>\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/easy-digital-downloads-taxamo-integration/language/sv_SE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: includes/class.extension-activation.php:37
+msgid "EDD Taxamo Integration"
+msgstr "EDD Taxamo Integration"
+
+#: includes/class.extension-activation.php:67
+msgid "requires Easy Digital Downloads! Please activate it to continue!"
+msgstr "Kräver Easy Digital Downloads! Vänligen aktivera!"
+
+#: includes/class.extension-activation.php:69
+msgid "requires Easy Digital Downloads! Please install it to continue!"
+msgstr "Kräver Easy Digital Downloads! Vänligen installera."
+
+#: taxamo-edd-integration.php:196
+msgid "Taxamo Integration"
+msgstr "Taxamo Integration"
+
+#: taxamo-edd-integration.php:203
+msgid "Taxamo Public Token"
+msgstr "Taxamo Public Token"
+
+#: taxamo-edd-integration.php:204 taxamo-edd-integration.php:212
+msgid "Available from <a href=\"%s\">Taxamo</a>."
+msgstr "Tillgänglig från <a href=\"%s\">Taxamo</a>."
+
+#: taxamo-edd-integration.php:211
+msgid "Taxamo Private Token"
+msgstr "Taxamo Private Token"
+
+#: taxamo-edd-integration.php:219
+msgid "Ask for VAT Number?"
+msgstr "Fråga efter momsregistreringsnummer."
+
+#: taxamo-edd-integration.php:220
+msgid "If you wish to ask the user for a VAT number, please check this box."
+msgstr "Om du vill fråga efter användarens momsregistreringsnummer, kryssa i denna ruta."
+
+#: taxamo-edd-integration.php:225
+msgid "Custom ID Format"
+msgstr "Eget ID"
+
+#: taxamo-edd-integration.php:226
+msgid ""
+"Format of the Custom ID.<br/>The string %%ID%% is replaced with the payment "
+"ID."
+msgstr "Formatet för eget ID.<br/>Strängen %%ID%% är ersatt med betalnings ID."
+
+#: taxamo-edd-integration.php:229 taxamo-edd-integration.php:237
+msgid "%%ID%%"
+msgstr "%%ID%%"
+
+#: taxamo-edd-integration.php:233
+msgid "Custom Invoice Format"
+msgstr "Särskilt fakturaformat."
+
+#: taxamo-edd-integration.php:234
+msgid ""
+"Format of the Invoice Number.<br/>The string %%ID%% is replaced with the "
+"payment ID."
+msgstr "Format för fakturanummer.<br/>Strängen %%ID%% ersätts med betalnings ID."
+
+#: taxamo-edd-integration.php:241
+msgid "Introduction Header Text"
+msgstr "Introduktion rubrik"
+
+#: taxamo-edd-integration.php:242
+msgid ""
+"This text will be added before the extra fields. Use this to link to your "
+"privacy policy and why you need this information"
+msgstr "Denna text läggs för extrafälten. Använd den för att länka till din integritetspolicy och för att förklara varför du behöver informationen."
+
+#: taxamo-edd-integration.php:316
+msgid ""
+"By clicking this checkbox, I can confirm my billing address is valid and is "
+"located in my usual country of residence."
+msgstr "Genom att kryssa i, bekräftar jag att faktureringsadressen är giltig och jag bor i landet."
+
+#: taxamo-edd-integration.php:331
+msgid "I am registered for VAT in the EU"
+msgstr "Jag är registrerad för moms i EU."
+
+#: taxamo-edd-integration.php:338 taxamo-edd-integration.php:341
+msgid "VAT Number"
+msgstr "Momsregistreringsnummer"
+
+#: taxamo-edd-integration.php:340
+msgid "If you are registered for VAT, place your VAT number here (no spaces)."
+msgstr "Om du har ett momsregistreringsnummer, fyll i det här (utan mellanslag)."
+
+#: taxamo-edd-integration.php:358
+msgid "If you are VAT registered, please enter a VAT number."
+msgstr "Om du har ett momsregistreringsnummer, fyll i det."
+
+#: taxamo-edd-integration.php:368
+msgid ""
+"The VAT number is invalid. Please double check or untick the VAT Registered "
+"Box."
+msgstr "Momsregistreringsnummer är ogiltigt. Vänligen kontrollera numret, eller kryssa ur rutan."
+
+#: taxamo-edd-integration.php:372
+msgid ""
+"Private key not present, so unable to complete purchase. Please contact shop"
+" owner."
+msgstr "Den privata nyckel saknas, går ej att fullfölja köpet. Kontakta webbutikens ägare."
+
+#: taxamo-edd-integration.php:395 taxamo-edd-integration.php:403
+msgid "Please confirm that the billing address is correct."
+msgstr "Bekräfta att faktureringsadressen är korrekt."
+
+#: taxamo-edd-integration.php:468
+msgid "VAT Number:"
+msgstr "Momsregistreringsnummer:"
+
+#: taxamo-edd-integration.php:470
+msgid "If the customer had a VAT number, it will be here"
+msgstr "Om kunden har ett momsregistreringsnummer, finns det här."
+
+#: taxamo-edd-integration.php:817
+msgid ""
+"Taxamo Integration needs Taxes to be Enabled. <a href=\"%s\">Click Here to "
+"enable Taxes</a>."
+msgstr "Taxamo Integration behöver ha moms aktiverat. <a href=\"%s\">Klicka här för att aktivera moms</a>."
+
+#: taxamo-edd-integration.php:832
+msgid ""
+"You need to add the Taxamo Public & Private Keys to the extension. <a "
+"href=\"%s\"><strong>Sign Up for Taxamo</strong></a> and then <a "
+"href=\"%s\">Click Here to add these fields</a>."
+msgstr "Du behöver lägga till Taxamo Public & Private Keys för att tilläget ska fungera. <a href=\"%s\"><strong>Registrera dig på Taxamo</strong></a> och <a href=\"%s\">klicka här för att lägga till fälten</a>."
+
+#. Plugin Name of the plugin/theme
+msgid "Easy Digital Downloads - Taxamo Integration"
+msgstr "Easy Digital Downloads - Taxamo Integration"
+
+#. Plugin URI of the plugin/theme
+msgid "http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/"
+msgstr "http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/"
+
+#. Description of the plugin/theme
+msgid ""
+"Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with "
+"the VATMOSS EU Legislation"
+msgstr "Integrera Taxamo med Easy Digital Downloads. Gör dig kompatibel med EUs VATMOSS bestämmelser."
+
+#. Author of the plugin/theme
+msgid "Winwar Media"
+msgstr "Winwar Media"
+
+#. Author URI of the plugin/theme
+msgid "http://winwar.co.uk"
+msgstr "http://winwar.co.uk"
