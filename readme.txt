@@ -48,6 +48,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.6 =
+* Added the ability to disable custom ID & custom invoicing, allowing Taxamo to set these values.
+
 = 1.5.1 =
 * Fixes bug that reports incorrect values for non-EU based orders but with other tax rates, with Inclusive pricing switched on.
 
