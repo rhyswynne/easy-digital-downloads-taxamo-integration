@@ -5,6 +5,7 @@ Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me
 Requires at least: 3.9.2
 Tested up to: 4.2.3
 Stable tag: trunk
+Licence: GPLv2 or later
 
 This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital Downloads.
 
@@ -14,28 +15,31 @@ This plugin allows you to use [Taxamo's EU VAT recording system](http://winwar.c
 
 In January 2015 EU Legislation required you to record the selling location of all sales from the EU and pay VAT on each purchase. In order to comply, services such as Taxamo will allow you to record the relevant data. This plugin will automatically track your transactions in Easy Digital Downloads, applying the correct VAT rate dependant on the user's location, as well as handles refunds as well.
 
-= Support =
-This plugin has **no free support**. As such, no support will be given on the WordPress.org forums. Instead support is handled by [Priority Support](http://winwar.co.uk/priority-support/?level=3) section. If you believe you have a bug, rather than a support request, please submit a bug to the Github issue tracker, or [contact me](http://winwar.co.uk/contact-us/) directly.
+More details are available on the official [Easy Digital Downloads - Taxamo Integration](https://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration) page at Winwar Media's site.
 
-[**Sign up For Support Here**](http://winwar.co.uk/priority-support/?level=3)
+> <strong>Support</strong>
+> This plugin has **no free support**. As such, no support will be given on the WordPress.org forums. First off, [please read the documentation of this project](https://winwar.co.uk/documentation/easy-digital-downloads-taxamo-integration/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration), and should you need it, support is handled by [Priority Support](http://winwar.co.uk/priority-support/?level=3&utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration) section. If you believe you have a bug, rather than a support request, please submit a bug to the Github issue tracker, or [contact me](http://winwar.co.uk/contact-us/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration) directly.
+
+> [**Sign up For Support Here**](http://winwar.co.uk/priority-support/?level=3&utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration)
 
 = Translation Credits =
 The plugin has been translated to the following languages.
 
 * Finnish - [Sami Keijonen](https://foxland.fi/) [@samikeijonen](https://twitter.com/samikeijonen)
 * French - [Fx Bénard](http://fxbenard.com/) [@fxbenard](https://twitter.com/fxbenard)
+* Swedish - [The WordPress Translations Project](http://wp-translations.org)
 
 To contribute a translation, you can do so by [checking out the project on Transifex](https://www.transifex.com/projects/p/easy-digital-downloads-taxamo-integration/)
 
 = About Winwar Media =
-This plugin is made by [**Winwar Media**](http://winwar.co.uk/), a WordPress Development and Training Agency in Manchester, UK.
+This plugin is made by [**Winwar Media**](http://winwar.co.uk/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration), a WordPress Development and Training Agency in Manchester, UK.
 
 Why don't you?
 
-* Check out our book, [bbPress Complete](http://winwar.co.uk/books/bbpress-complete/)
-* Check out our other [WordPress Plugins](http://winwar.co.uk/plugins/), including [WP Email Capture](http://wpemailcapture.com)
+* Check out our book, [bbPress Complete](http://winwar.co.uk/books/bbpress-complete/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration)
+* Check out our other [WordPress Plugins](http://winwar.co.uk/plugins/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration), including [WP Email Capture](http://wpemailcapture.com/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration)
 * Follow us on Social Media, such as [Facebook](https://www.facebook.com/winwaruk), [Twitter](https://twitter.com/winwaruk) or [Google+](https://plus.google.com/+WinwarCoUk)
-* [Send us an email](http://winwar.co.uk/contact-us/)! We like hearing from plugin users.
+* [Send us an email](http://winwar.co.uk/contact-us/?utm_source=wordpress.org&utm_medium=readmetext&utm_campaign=eddtaxamointegration)! We like hearing from plugin users.
 
 == Installation ==
 
@@ -51,6 +55,9 @@ Why don't you?
 = 1.6 =
 * Added the ability to disable custom ID & custom invoicing, allowing Taxamo to set these values.
 * Updated the Taxamo integration script to 1.0.22.
+* Added Swedish Translation
+
+*Time Taken - 2 hours*
 
 = 1.5.1 =
 * Fixes bug that reports incorrect values for non-EU based orders but with other tax rates, with Inclusive pricing switched on.

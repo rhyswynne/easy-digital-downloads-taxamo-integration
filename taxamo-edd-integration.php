@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
- * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/
+ * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=plugins-page&utm_medium=pluginlink&utm_campaign=eddtaxamointegration
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.6-beta
+ * Version:         1.6
  * Author:          Winwar Media
- * Author URI:      http://winwar.co.uk
+ * Author URI:      http://winwar.co.uk/?utm_source=plugins-page&utm_medium=authorlink&utm_campaign=eddtaxamointegration
  * Text Domain:     taxamo-edd-integration
  *
  * @package         EDD\TaxamoEDDIntegration
@@ -179,6 +179,9 @@ if ( !class_exists( 'EDD_Taxamo_EDD_Integration' ) ) {
             if ( !isset( $edd_options['taxedd_public_token'] ) || empty( $edd_options['taxedd_public_token'] ) || "" === $edd_options['taxedd_public_token'] || !isset( $edd_options['taxedd_private_token'] ) || empty( $edd_options['taxedd_private_token'] ) || "" === $edd_options['taxedd_private_token'] ) {
                 add_action( 'admin_notices', array( $this, 'add_keys_notices' ) );
             }
+
+            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'add_support_links' ) );
+
         }
 
 
@@ -831,10 +834,10 @@ return array_merge( $settings, $new_settings );
 
 
                 try {
-                    
+
                     $apiclient = new APIClient( $private_key, 'https://api.taxamo.com' );
                     $apiclient->sourceId = '['.EDD_TAXAMOEDDINTEGRATION_DOMAIN.'-'.EDD_TAXAMOEDDINTEGRATION_NAME.'-'. EDD_TAXAMOEDDINTEGRATION_VER.']';
-                
+
                     $taxamo = new Taxamo( $apiclient );
 
                     // Basic payment meta
@@ -1455,6 +1458,15 @@ return array_merge( $settings, $new_settings );
 
             return false;
         }
+
+
+        public function add_support_links ( $links ) {
+           $mylinks = array(
+               '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
+               '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=plugins-page&utm_medium=supportlink&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
+               );
+           return array_merge( $links, $mylinks );
+       }
     }
 
 
