@@ -110,10 +110,10 @@ grunt.initConfig({
 grunt.registerTask( 'default', 'makepot' );
 
 // Makepot and push it on Transifex task(s).
-grunt.registerTask( 'makandpush', [ 'makepot', 'exec:txpush_s' ] );
+grunt.registerTask( 'tx-push', [ 'makepot', 'exec:txpush_s' ] );
 
 // Pull from Transifex and create .mo task(s).
-grunt.registerTask( 'tx', [ 'exec:txpull', 'potomo' ] );
+grunt.registerTask( 'tx-pull', [ 'exec:txpull', 'potomo' ] );
 
 // Build task(s).
   grunt.registerTask( 'build', [ 'clean', 'copy', 'compress' ] );
