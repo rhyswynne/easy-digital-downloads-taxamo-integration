@@ -1,12 +1,13 @@
-# Copyright (C) 2015
-# This file is distributed under the same license as the  package.
+# Copyright (C) 2015 Winwar Media
+# This file is distributed under the same license as the Easy Digital Downloads - Taxamo Integration package.
 # Translators:
+# FxB <fxb@wp-translations.org>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Digital Downloads - Taxamo Integration\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/easy-digital-downloads-taxamo-integration\n"
-"POT-Creation-Date: 2015-01-11 11:04:31+00:00\n"
-"PO-Revision-Date: 2015-01-26 16:57+0000\n"
+"Report-Msgid-Bugs-To: http://wp-translations.org/\n"
+"POT-Creation-Date: 2015-08-03 09:12:48+00:00\n"
+"PO-Revision-Date: 2015-08-03 09:24+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/easy-digital-downloads-taxamo-integration/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -14,132 +15,180 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
 
 #: includes/class.extension-activation.php:37
 msgid "EDD Taxamo Integration"
-msgstr "EDD Taxamo Integration"
+msgstr "EDD Taxamo Intégration"
 
 #: includes/class.extension-activation.php:67
 msgid "requires Easy Digital Downloads! Please activate it to continue!"
-msgstr "nécessite Easy Digital Downloads. Veuillez l'activer pour continuer !"
+msgstr "nécessite Easy Digital Downloads. Veuillez l'activer pour continuer !"
 
 #: includes/class.extension-activation.php:69
 msgid "requires Easy Digital Downloads! Please install it to continue!"
-msgstr "nécessite Easy Digital Downloads. Veuillez l'installer pour continuer !"
+msgstr "nécessite Easy Digital Downloads. Veuillez l'installer pour continuer !"
 
-#: taxamo-edd-integration.php:196
+#: taxamo-edd-integration.php:230
 msgid "Taxamo Integration"
 msgstr "Intégration de Taxamo"
 
-#: taxamo-edd-integration.php:203
+#: taxamo-edd-integration.php:237
 msgid "Taxamo Public Token"
 msgstr "Jeton publique de Taxamo"
 
-#: taxamo-edd-integration.php:204 taxamo-edd-integration.php:212
+#: taxamo-edd-integration.php:238 taxamo-edd-integration.php:246
 msgid "Available from <a href=\"%s\">Taxamo</a>."
 msgstr "Disponible sur <a href=\"%s\">Taxamo</a>."
 
-#: taxamo-edd-integration.php:211
+#: taxamo-edd-integration.php:245
 msgid "Taxamo Private Token"
 msgstr "Jeton privé de Taxamo"
 
-#: taxamo-edd-integration.php:219
+#: taxamo-edd-integration.php:253
 msgid "Ask for VAT Number?"
-msgstr "Demandez le numéro de TVA ?"
+msgstr "Demandez le numéro de TVA ?"
 
-#: taxamo-edd-integration.php:220
+#: taxamo-edd-integration.php:254
 msgid "If you wish to ask the user for a VAT number, please check this box."
 msgstr "Si vous souhaitez demander à l&#39;utilisateur son numéro de TVA, veuillez cocher cette case."
 
-#: taxamo-edd-integration.php:225
+#: taxamo-edd-integration.php:259
 msgid "Custom ID Format"
-msgstr "Format personnalisé de l'ID"
+msgstr "Format personnalisé de l&rsquo;ID"
 
-#: taxamo-edd-integration.php:226
+#: taxamo-edd-integration.php:260
 msgid ""
 "Format of the Custom ID.<br/>The string %%ID%% is replaced with the payment "
 "ID."
-msgstr "Format de l'ID personnalisé.</br>La chaîne %%ID%% sera remplacée par l'ID du paiement."
+msgstr "Format de l&rsquo;ID personnalisé.</br>La chaîne %%ID%% sera remplacée par l&rsquo;ID du paiement."
 
-#: taxamo-edd-integration.php:229 taxamo-edd-integration.php:237
+#: taxamo-edd-integration.php:263 taxamo-edd-integration.php:277
 msgid "%%ID%%"
 msgstr "%%ID%%"
 
-#: taxamo-edd-integration.php:233
+#: taxamo-edd-integration.php:267
+msgid "Disable Custom ID"
+msgstr "Désactiver l&rsquo;ID personnalisée"
+
+#: taxamo-edd-integration.php:268
+msgid "Tick this box to disable the custom ID from being sent to Taxamo."
+msgstr "Cochez cette case si vous voulez désactiver l&rsquo;envoie de l&rsquo;identifiant personnalisé sur Taxamo."
+
+#: taxamo-edd-integration.php:273
 msgid "Custom Invoice Format"
 msgstr "Format de la facture personnalisée"
 
-#: taxamo-edd-integration.php:234
+#: taxamo-edd-integration.php:274
 msgid ""
 "Format of the Invoice Number.<br/>The string %%ID%% is replaced with the "
 "payment ID."
-msgstr "Format du numéro de la facture.</br>La chaîne %%ID%% sera remplacée par l'ID du paiement."
+msgstr "Format du numéro de la facture.</br>La chaîne %%ID%% sera remplacée par l'&rsquo;D du paiement."
 
-#: taxamo-edd-integration.php:241
+#: taxamo-edd-integration.php:281
+msgid "Disable Custom Invoice"
+msgstr "Désactiver la facture personnalisée"
+
+#: taxamo-edd-integration.php:282
+msgid ""
+"Tick this box to disable the custom invoice from being sent to Taxamo, and "
+"allow the invoice number to be auto generated by Taxamo."
+msgstr "Cochez cette case si vous voulez désactiver l&rsquo;envoie de la facture personnalisée sur Taxamo, et permettre le nombre de la facture au-généré par Taxamo."
+
+#: taxamo-edd-integration.php:287
 msgid "Introduction Header Text"
-msgstr "Texte d'introduction de l'en-tête"
+msgstr "Texte d&rsquo;introduction de l&rsquo;en-tête"
 
-#: taxamo-edd-integration.php:242
+#: taxamo-edd-integration.php:288
 msgid ""
 "This text will be added before the extra fields. Use this to link to your "
 "privacy policy and why you need this information"
-msgstr "Ce texte s'affichera au dessus des champs supplémentaires. Utilisez-le pour faire un lien vers votre page de politique de confidentialité et expliquez pourquoi vous avez besoin de ces informations."
+msgstr "Ce texte s&rsquo;affichera au dessus des champs supplémentaires. Utilisez-le pour faire un lien vers votre page de politique de confidentialité et expliquez pourquoi vous avez besoin de ces informations."
 
-#: taxamo-edd-integration.php:316
+#: taxamo-edd-integration.php:373
 msgid ""
 "By clicking this checkbox, I can confirm my billing address is valid and is "
 "located in my usual country of residence."
 msgstr "En cliquant cette case, je confirme que mon adresse de facturation est valide et se trouve dans mon pays de résidence habituel."
 
-#: taxamo-edd-integration.php:331
+#: taxamo-edd-integration.php:389
 msgid "I am registered for VAT in the EU"
-msgstr "J'ai un numéro de TVA dans l'EU"
+msgstr "J&rsquo;ai un numéro de TVA dans l&rsquo;EU"
 
-#: taxamo-edd-integration.php:338 taxamo-edd-integration.php:341
+#: taxamo-edd-integration.php:396 taxamo-edd-integration.php:399
 msgid "VAT Number"
 msgstr "Numéro de TVA"
 
-#: taxamo-edd-integration.php:340
+#: taxamo-edd-integration.php:398
 msgid "If you are registered for VAT, place your VAT number here (no spaces)."
 msgstr "Si vous avez un numéro de TVA, placez votre numéro de TVA ici (sans espaces)."
 
-#: taxamo-edd-integration.php:358
+#: taxamo-edd-integration.php:416
 msgid "If you are VAT registered, please enter a VAT number."
 msgstr "Si vous avez un numéro de TVA enregistré, entrez ce numéro ici."
 
-#: taxamo-edd-integration.php:368
+#: taxamo-edd-integration.php:425
 msgid ""
 "The VAT number is invalid. Please double check or untick the VAT Registered "
 "Box."
 msgstr "Le numéro de TVA n'est pas valide. Veuillez le revérifier ou décochez la boite d'enregistrement de la TVA."
 
-#: taxamo-edd-integration.php:372
+#: taxamo-edd-integration.php:429
 msgid ""
 "Private key not present, so unable to complete purchase. Please contact shop"
 " owner."
-msgstr "Clé privée non présente, donc il est impossile de terminer l&#39;achat. Veuillez contacter le propriétaire de la boutique."
+msgstr "Clé privée non présente, donc il est impossible de terminer l&rsquo;achat. Veuillez contacter le propriétaire de la boutique."
 
-#: taxamo-edd-integration.php:391 taxamo-edd-integration.php:399
+#: taxamo-edd-integration.php:452 taxamo-edd-integration.php:460
 msgid "Please confirm that the billing address is correct."
 msgstr "Veuillez confirmer que cette adresse de facturation est correcte."
 
-#: taxamo-edd-integration.php:464
+#: taxamo-edd-integration.php:525
 msgid "VAT Number:"
-msgstr "Numéro de TVA :"
+msgstr "Numéro de TVA :"
 
-#: taxamo-edd-integration.php:466
+#: taxamo-edd-integration.php:527
 msgid "If the customer had a VAT number, it will be here"
 msgstr "Si le client a un numéro de TVA, il sera ici"
 
-#: taxamo-edd-integration.php:809
+#: taxamo-edd-integration.php:1105
 msgid ""
 "Taxamo Integration needs Taxes to be Enabled. <a href=\"%s\">Click Here to "
 "enable Taxes</a>."
 msgstr "L&#39;intégration de Taxamo nécessite que la TVA sur les achats soit activée. <a href=\"%s\">Cliquez ici pour l'activer</a> ."
 
-#: taxamo-edd-integration.php:824
+#: taxamo-edd-integration.php:1120
 msgid ""
 "You need to add the Taxamo Public & Private Keys to the extension. <a "
 "href=\"%s\"><strong>Sign Up for Taxamo</strong></a> and then <a "
 "href=\"%s\">Click Here to add these fields</a>."
 msgstr "Vous devez ajouter les clés publique et privée à l'extension.<a href=\"%s\"><strong>Enregistrez-vous sur Taxamo</strong></a> et ensuite <a href=\"%s\">cliquez ici pour ajoutez ces champs</a>."
+
+#. Plugin Name of the plugin/theme
+msgid "Easy Digital Downloads - Taxamo Integration"
+msgstr "Easy Digital Downloads - Taxamo Integration"
+
+#. Plugin URI of the plugin/theme
+msgid "http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/"
+msgstr "http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/"
+
+#. Description of the plugin/theme
+msgid ""
+"Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with "
+"the VATMOSS EU Legislation"
+msgstr "Intégrer Taxamo dans Easy Digital Downloads. Soyez compatible avec la législation VATMOSS européenne."
+
+#. Author of the plugin/theme
+msgid "Winwar Media"
+msgstr "Winwar Media"
+
+#. Author URI of the plugin/theme
+msgid "http://winwar.co.uk"
+msgstr "http://winwar.co.uk"
