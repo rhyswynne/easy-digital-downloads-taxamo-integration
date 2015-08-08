@@ -20,7 +20,7 @@ This plugin allows you to use Taxamo's EU VAT recording system within Easy Digit
 
 In January 2015 EU Legislation required you to record the selling location of all sales from the EU and pay VAT on each purchase. In order to comply, services such as Taxamo will allow you to record the relevant data. This plugin will automatically track your transactions in Easy Digital Downloads, applying the correct VAT rate dependant on the user's location, as well as handles refunds as well.
 
-Further information is available on the [official plugin page](https://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=github.com&utm_medium=readmetext&utm_campaign=eddtaxamointegration), and [documentation page](https://winwar.co.uk/documentation/easy-digital-downloads-taxamo-integration/?utm_source=github.com&utm_medium=readmetext&utm_campaign=eddtaxamointegration).
+Further information is available on the [official plugin page](https://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=description&utm_medium=mdreadmetext&utm_campaign=eddtaxamointegration), and [documentation page](https://winwar.co.uk/documentation/easy-digital-downloads-taxamo-integration/?utm_source=description&utm_medium=mdreadmetext&utm_campaign=eddtaxamointegration).
 
 Maintained by [Winwar Media](https://winwar.co.uk/)
 

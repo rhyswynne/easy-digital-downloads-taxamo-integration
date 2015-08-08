@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
- * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=plugins-page&utm_medium=pluginlink&utm_campaign=eddtaxamointegration
+ * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=plugin-link&utm_medium=plugin&utm_campaign=eddtaxamointegration
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.6
+ * Version:         1.6.1
  * Author:          Winwar Media
- * Author URI:      http://winwar.co.uk/?utm_source=plugins-page&utm_medium=authorlink&utm_campaign=eddtaxamointegration
+ * Author URI:      http://winwar.co.uk/?utm_source=author-link&utm_medium=plugin&utm_campaign=eddtaxamointegration
  * Text Domain:     taxamo-edd-integration
  *
  * @package         EDD\TaxamoEDDIntegration
@@ -1463,7 +1463,7 @@ return array_merge( $settings, $new_settings );
         public function add_support_links ( $links ) {
            $mylinks = array(
                '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
-               '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=plugins-page&utm_medium=supportlink&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
+               '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=support-link&utm_medium=plugin&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
                );
            return array_merge( $links, $mylinks );
        }
