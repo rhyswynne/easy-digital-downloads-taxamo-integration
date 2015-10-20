@@ -53,6 +53,11 @@ Why don't you?
 
 == Changelog ==
 
+= 1.6.2 =
+* Fixed a bug that caused the wrong tax to be calculated should there be no fallback.
+
+*Time Taken - 1 hour*
+
 = 1.6.1 =
 * Changed tracking code.
 * Tested in 4.3.

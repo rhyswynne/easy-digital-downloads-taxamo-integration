@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Taxamo Integration
  * Plugin URI:      http://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=plugin-link&utm_medium=plugin&utm_campaign=eddtaxamointegration
  * Description:     Integrate Taxamo into Easy Digital Downloads. Make yourself Compatible with the VATMOSS EU Legislation
- * Version:         1.6.1
+ * Version:         1.6.2
  * Author:          Winwar Media
  * Author URI:      http://winwar.co.uk/?utm_source=author-link&utm_medium=plugin&utm_campaign=eddtaxamointegration
  * Text Domain:     taxamo-edd-integration
@@ -1044,6 +1044,7 @@ return array_merge( $settings, $new_settings );
 
                 if ( $this->check_if_eu( $country ) ) {
                     $tax = edd_get_cart_tax();
+
                     $cartamount = $cartamount - $tax;
                 }
 
@@ -1232,9 +1233,21 @@ return array_merge( $settings, $new_settings );
                         $transaction_line = new Input_transaction_line();
 
                         if ( "yes" == $edd_options['checkout_include_tax'] ) { 
-                            $transaction_line->total_amount = $cart_item['price'];
+
+                            if ( $this->check_if_eu( $countrycode ) ) {
+                                $transaction_line->total_amount = $cart_item['price'];
+                            } else {
+                                $transaction_line->total_amount = $cart_item['price'] - $cart_item['tax'];
+                            }
+
                         } else {
-                            $transaction_line->amount = $cart_item['price'];
+
+                            if ( $this->check_if_eu( $countrycode ) ) {
+                                $transaction_line->amount = $cart_item['price'] - $cart_item['tax'];
+                            } else {
+                                $transaction_line->amount = $cart_item['price'];
+                            }
+
                         }
 
                         $transaction_line->custom_id = $cart_item['name'] . $customid;
@@ -1326,9 +1339,20 @@ return array_merge( $settings, $new_settings );
                         $transaction_line = new Input_transaction_line();
 
                         if ( "yes" == $edd_options['checkout_include_tax'] ) { 
-                            $transaction_line->total_amount = $cart_item['price'];
+
+                            if ( $this->check_if_eu( $countrycode ) ) {
+                                $transaction_line->total_amount = $cart_item['price'];
+                            } else {
+                                $transaction_line->total_amount = $cart_item['price'] - $cart_item['tax'];
+                            }
+
                         } else {
-                            $transaction_line->amount = $cart_item['price'];
+
+                            if ( $this->check_if_eu( $countrycode ) ) {
+                                $transaction_line->amount = $cart_item['price'] - $cart_item['tax'];
+                            } else {
+                                $transaction_line->amount = $cart_item['price'];
+                            }
                         }
 
                         $transaction_line->custom_id = $cart_item['name'] . $customid;
@@ -1461,13 +1485,13 @@ return array_merge( $settings, $new_settings );
 
 
         public function add_support_links ( $links ) {
-           $mylinks = array(
-               '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
-               '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=support-link&utm_medium=plugin&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
-               );
-           return array_merge( $links, $mylinks );
-       }
-    }
+         $mylinks = array(
+             '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
+             '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=support-link&utm_medium=plugin&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
+             );
+         return array_merge( $links, $mylinks );
+     }
+ }
 
 
     /**
