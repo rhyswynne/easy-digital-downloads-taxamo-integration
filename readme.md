@@ -22,7 +22,7 @@ In January 2015 EU Legislation required you to record the selling location of al
 
 Further information is available on the [official plugin page](https://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=description&utm_medium=mdreadmetext&utm_campaign=eddtaxamointegration), and [documentation page](https://winwar.co.uk/documentation/easy-digital-downloads-taxamo-integration/?utm_source=description&utm_medium=mdreadmetext&utm_campaign=eddtaxamointegration).
 
-Maintained by [Winwar Media](https://winwar.co.uk/)
+No longer maintained by [Winwar Media](https://winwar.co.uk/). If you wish to adopt this plugin, [please contact me directly](https://winwar.co.uk/contact-us/)?utm_source=description&utm_medium=mdreadmetext&utm_campaign=eddtaxamointegration.
 
 Installation
 ------------

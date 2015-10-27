@@ -1,13 +1,13 @@
 === Easy Digital Downloads - Taxamo Integration ===
 Contributors: rhyswynne
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
-Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me
+Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me, adopt-me
 Requires at least: 3.9.2
 Tested up to: 4.3
 Stable tag: trunk
 Licence: GPLv2 or later
 
-This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital Downloads.
+No longer maintained. This plugin allows you to use Taxamo's EU VAT recording system in Easy Digital Downloads.
 
 == Description ==
 
@@ -17,11 +17,9 @@ In January 2015 EU Legislation required you to record the selling location of al
 
 More details are available on the official [Easy Digital Downloads - Taxamo Integration](https://winwar.co.uk/plugins/easy-digital-downloads-taxamo-integration/?utm_source=description&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration) page at Winwar Media's site.
 
-> <strong>Support</strong>
+> <strong>Adopt Me!</strong>
 
-> This plugin has **no free support**. As such, no support will be given on the WordPress.org forums. First off, [please read the documentation of this project](https://winwar.co.uk/documentation/easy-digital-downloads-taxamo-integration/?utm_source=supportbox&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration), and should you need it, support is handled by [Priority Support](http://winwar.co.uk/priority-support/?level=3&utm_source=supportbox&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration) section. If you believe you have a bug, rather than a support request, please submit a bug to the Github issue tracker, or [contact me](http://winwar.co.uk/contact-us/?utm_source=supportbox&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration) directly.
-
-> [**Sign up For Support Here**](http://winwar.co.uk/priority-support/?level=3&utm_source=supportbox&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration)
+> As of October 26th, this plugin is no longer maintained. [The reasons for this are detailed in this blog post](https://winwar.co.uk/2015/10/discontinuation-of-easy-digital-downloads-taxamo-integration/?utm_source=adoptme&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration). In short, I've no longer got time to maintain it. I am happy to facilitate the transfer of this plugin from me to any other party, as well as assist with setting up the new owner. If you wish to adopt this plugin, [please contact me directly](https://winwar.co.uk/contact-us/?utm_source=adoptme&utm_medium=wordpressorgreadme&utm_campaign=eddtaxamointegration)
 
 = Translation Credits =
 The plugin has been translated to the following languages.

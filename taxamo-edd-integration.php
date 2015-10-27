@@ -1234,6 +1234,8 @@ return array_merge( $settings, $new_settings );
 
                         if ( "yes" == $edd_options['checkout_include_tax'] ) { 
 
+                            //print_r( $cart_item );
+
                             if ( $this->check_if_eu( $countrycode ) ) {
                                 $transaction_line->total_amount = $cart_item['price'];
                             } else {
@@ -1241,6 +1243,8 @@ return array_merge( $settings, $new_settings );
                             }
 
                         } else {
+
+                            //print_r( $cart_item );
 
                             if ( $this->check_if_eu( $countrycode ) ) {
                                 $transaction_line->amount = $cart_item['price'] - $cart_item['tax'];
@@ -1485,13 +1489,13 @@ return array_merge( $settings, $new_settings );
 
 
         public function add_support_links ( $links ) {
-         $mylinks = array(
-             '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
-             '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=support-link&utm_medium=plugin&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
-             );
-         return array_merge( $links, $mylinks );
-     }
- }
+           $mylinks = array(
+               '<a href="https://winwar.co.uk/recommends/taxamo/">' . __( 'Sign Up For Taxamo', 'taxamoedd' ) . '</a>',
+               '<a href="http://winwar.co.uk/priority-support/?level=3&utm_source=support-link&utm_medium=plugin&utm_campaign=eddtaxamointegration">' . __( 'Get Support', 'taxamoedd' ) . '</a>'
+               );
+           return array_merge( $links, $mylinks );
+       }
+   }
 
 
     /**
