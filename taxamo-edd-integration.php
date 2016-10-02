@@ -372,7 +372,7 @@ return array_merge( $settings, $new_settings );
 
 
             <p id="edd-confirmation-checkbox" <?php echo $stylecss; ?>>
-                <label for="edd-vat-confirm" class="edd-label">
+                <label for="edd-self-declaration" class="edd-label">
                     <?php _e( 'By clicking this checkbox, I can confirm my billing address is valid and is located in my usual country of residence.', 'taxamoedd' ); ?>
                     <input class="edd-self-declaration" type="checkbox" name="edd_self_declaration" id="edd-self-declaration" value="true" />
                 </label>
