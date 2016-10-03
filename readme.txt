@@ -51,6 +51,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.6.3 =
+* Fixed a bug on the checkout self declaration label (Props [Natewr](https://github.com/NateWr)).
+
 = 1.6.2 =
 * Fixed a bug that caused the wrong tax to be calculated should there be no fallback.
 
