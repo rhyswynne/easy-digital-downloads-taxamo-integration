@@ -1163,13 +1163,13 @@ return array_merge( $settings, $new_settings );
                         "line_key" => $line_key );
                     $taxamo_body_json = json_encode( $taxamo_body_array );
 
-                // Create Taxamo Object and Submit a refund
+                    // Create Taxamo Object and Submit a refund
                     $private_key = $edd_options['taxedd_private_token'];
 
                     $apiclient = new APIClient( $private_key, 'https://api.taxamo.com' );
                     $apiclient->sourceId = '['.EDD_TAXAMOEDDINTEGRATION_DOMAIN.'-'.EDD_TAXAMOEDDINTEGRATION_NAME.'-'. EDD_TAXAMOEDDINTEGRATION_VER.']';
                     
-                    $refundtaxamo = new Taxamo( $private_key );
+                    $refundtaxamo = new Taxamo( $apiclient );
                     $resp = $refundtaxamo->createRefund( $transaction_key, $taxamo_body_array );
                 }
             }
