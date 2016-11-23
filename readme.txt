@@ -51,6 +51,9 @@ Why don't you?
 
 == Changelog ==
 
+= 1.6.4 =
+* Fixed a bug that resolves a fatal error that happens when refunding a payment. (Props [Eric Daams](https://github.com/ericnicolaas))
+
 = 1.6.3 =
 * Fixed a bug on the checkout self declaration label (Props [Natewr](https://github.com/NateWr)).
 
