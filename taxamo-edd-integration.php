@@ -475,6 +475,10 @@ return array_merge( $settings, $new_settings );
         public function store_eu_data( $payment_meta ) {
             global $edd_options;
 
+            if ( empty( $payment_meta ) ) {
+                return $payment_meta;
+            }
+
             $payment_meta['country']    = isset( $_POST['edd_country'] ) ? sanitize_text_field( $_POST['edd_country'] ) : $payment_meta['user_info']['address']['country'];
 
             $payment_meta['edd_vatreg'] = isset( $_POST['edd_vatreg'] ) ? true : false;
