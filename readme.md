@@ -8,7 +8,7 @@ Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu
 
 Requires at least: 
 
-Tested up to: 4.3
+Tested up to: 4.8
 
 Stable tag: trunk
 

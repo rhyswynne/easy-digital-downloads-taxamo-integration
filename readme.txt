@@ -3,7 +3,7 @@ Contributors: rhyswynne
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VBQ4NPY2XX5KN
 Tags: easy digital downloads, edd, taxamo, vatmoss, tax, vat, eu, translate-me, adopt-me
 Requires at least: 3.9.2
-Tested up to: 4.3
+Tested up to: 4.8
 Stable tag: trunk
 Licence: GPLv2 or later
 
@@ -50,6 +50,9 @@ Why don't you?
 
 
 == Changelog ==
+
+= 1.6.5 =
+* Runs a check that if payment data is empty then we don’t submit to Taxamo. (Props [Eric Daams](https://github.com/ericnicolaas))
 
 = 1.6.4 =
 * Fixed a bug that resolves a fatal error that happens when refunding a payment. (Props [Eric Daams](https://github.com/ericnicolaas))
