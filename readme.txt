@@ -53,6 +53,7 @@ Why don't you?
 
 = 1.6.5 =
 * Runs a check that if payment data is empty then we don’t submit to Taxamo. (Props [Eric Daams](https://github.com/ericnicolaas))
+* Tested to 4.8
 
 = 1.6.4 =
 * Fixed a bug that resolves a fatal error that happens when refunding a payment. (Props [Eric Daams](https://github.com/ericnicolaas))
